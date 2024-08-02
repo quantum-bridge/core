@@ -1,0 +1,74 @@
+basePath: /
+definitions:
+  requests.ApproveDTO:
+    properties:
+      data:
+        $ref: '#/definitions/requests.ApproveRequest'
+    type: object
+  requests.ApproveRequest:
+    properties:
+      address:
+        description: Address is the address of the spender.
+        type: string
+      chain_id:
+        description: ChainID is the ID of the chain.
+        type: string
+      token_id:
+        description: TokenID is the ID of the token.
+        type: string
+    type: object
+  responses.TransactionsResponse:
+    properties:
+      data:
+        description: Data is the data of the response.
+      included:
+        description: Included is the included data of the response.
+        items:
+          items:
+            type: integer
+          type: array
+        type: array
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: Core bridge API is a service that responsible for the communication
+    between blockchains.
+  title: Core bridge API
+  version: "1.0"
+paths:
+  /transfers/approve:
+    post:
+      consumes:
+      - application/json
+      description: Approve is an HTTP handler that creates an approval transaction
+        for a spender.
+      operationId: approve
+      parameters:
+      - description: Request body
+        in: body
+        name: _
+        required: true
+        schema:
+          $ref: '#/definitions/requests.ApproveDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/responses.TransactionsResponse'
+        "204":
+          description: No content
+        "400":
+          description: Bad request
+        "404":
+          description: Not found
+        "500":
+          description: Internal server error
+      summary: Approve
+      tags:
+      - Transfers
+schemes:
+- http
+swagger: "2.0"
