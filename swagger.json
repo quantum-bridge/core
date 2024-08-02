@@ -90,10 +90,10 @@
             "type": "object",
             "properties": {
                 "data": {
-                    "description": "Data is the data of the response."
+                    "description": "Data is the body of transaction that is returned in the response."
                 },
                 "included": {
-                    "description": "Included is the included data of the response.",
+                    "description": "Included is the included chain data of the response.",
                     "type": "array",
                     "items": {
                         "type": "array",
