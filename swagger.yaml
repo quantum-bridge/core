@@ -1,9 +1,81 @@
 basePath: /
 definitions:
+  big.Int:
+    type: object
+  data.TokenType:
+    enum:
+    - fungible
+    - non-fungible
+    type: string
+    x-enum-varnames:
+    - FUNGIBLE
+    - NONFUNGIBLE
+  github_com_quantum-bridge_core_cmd_service_shared.Chain:
+    properties:
+      attributes:
+        allOf:
+        - $ref: '#/definitions/shared.ChainAttributes'
+        description: Attributes is the attributes of the chain entity.
+      id:
+        description: ID is the identifier of the entity.
+        type: string
+      relationships:
+        allOf:
+        - $ref: '#/definitions/shared.ChainRelationships'
+        description: Relationships is the relationships of the chain entity.
+      type:
+        allOf:
+        - $ref: '#/definitions/shared.EntityType'
+        description: Type is the type of the entity.
+    required:
+    - attributes
+    - id
+    - relationships
+    - type
+    type: object
+  github_com_quantum-bridge_core_cmd_service_shared.NFTAttribute:
+    properties:
+      trait_type:
+        description: TraitType is the type of the trait.
+        type: string
+      value:
+        description: Value is the value of the trait.
+        type: string
+    required:
+    - trait_type
+    - value
+    type: object
+  github_com_quantum-bridge_core_cmd_service_shared.Token:
+    properties:
+      attributes:
+        allOf:
+        - $ref: '#/definitions/shared.TokenAttributes'
+        description: Attributes is the attributes of the token entity.
+      id:
+        description: ID is the identifier of the entity.
+        type: string
+      relationships:
+        allOf:
+        - $ref: '#/definitions/shared.TokenRelationships'
+        description: Relationships is the relationships of the token entity.
+      type:
+        allOf:
+        - $ref: '#/definitions/shared.EntityType'
+        description: Type is the type of the entity.
+    required:
+    - attributes
+    - id
+    - relationships
+    - type
+    type: object
   requests.ApproveDTO:
     properties:
       data:
-        $ref: '#/definitions/requests.ApproveRequest'
+        allOf:
+        - $ref: '#/definitions/requests.ApproveRequest'
+        description: Data is the data of the approval request.
+    required:
+    - data
     type: object
   requests.ApproveRequest:
     properties:
@@ -16,8 +88,329 @@ definitions:
       token_id:
         description: TokenID is the ID of the token.
         type: string
+    required:
+    - address
+    - chain_id
+    - token_id
     type: object
-  responses.TransactionsResponse:
+  requests.LockDTO:
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/requests.LockRequest'
+        description: Data is the data of the lock request.
+    type: object
+  requests.LockRequest:
+    properties:
+      amount:
+        allOf:
+        - $ref: '#/definitions/big.Int'
+        description: Amount is the amount of tokens to lock.
+      chain_from:
+        description: ChainFrom is the chain that the lock is from.
+        type: string
+      chain_to:
+        description: ChainTo is the chain that is receiving the amount of tokens.
+        type: string
+      from:
+        description: From is the sender address of the lock.
+        type: string
+      nft_id:
+        description: NFTID is the ID of the NFT being locked in the chain.
+        type: string
+      to:
+        description: To is the receiver address of the lock.
+        type: string
+      token_id:
+        description: TokenID is the ID of the token being locked in the chain.
+        type: string
+    required:
+    - chain_from
+    - chain_to
+    - from
+    - to
+    - token_id
+    type: object
+  requests.WithdrawDTO:
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/requests.WithdrawRequest'
+        description: Data is the data of the withdrawal request.
+    required:
+    - data
+    type: object
+  requests.WithdrawRequest:
+    properties:
+      chain_from:
+        description: ChainFrom is the source chain ID.
+        type: string
+      event_index:
+        description: EventIndex Index of the event in the source chain that locked
+          the token, Must be used only if lock transaction has a few locking events.
+        type: integer
+      from:
+        description: From is the address of the sender in the destination chain. Should
+          be used only if the sender address is different with source chain.
+        type: string
+      raw_tx_data:
+        description: RawTxData is the raw transaction data with signatures.
+        type: string
+      token_id:
+        description: TokenID is the token ID of the token.
+        type: string
+      tx_hash:
+        description: TxHash is the hash of the transaction in the source chain that
+          locked the token.
+        type: string
+    required:
+    - chain_from
+    - token_id
+    - tx_hash
+    type: object
+  shared.Balance:
+    properties:
+      attributes:
+        allOf:
+        - $ref: '#/definitions/shared.BalanceAttributes'
+        description: Attributes is the attributes of the balance entity.
+      id:
+        description: ID is the identifier of the entity.
+        type: string
+      type:
+        allOf:
+        - $ref: '#/definitions/shared.EntityType'
+        description: Type is the type of the entity.
+    required:
+    - attributes
+    - id
+    - type
+    type: object
+  shared.BalanceAttributes:
+    properties:
+      address:
+        description: Address is the address of the balance.
+        type: string
+      amount:
+        allOf:
+        - $ref: '#/definitions/big.Int'
+        description: Amount is the amount of the balance.
+      token_address:
+        description: TokenAddress is the token address of the balance.
+        type: string
+    required:
+    - address
+    - amount
+    - token_address
+    type: object
+  shared.BalanceResponse:
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/shared.Balance'
+        description: Data is the balance of the account.
+      included:
+        description: Included is the included object in the response.
+        items:
+          items:
+            type: integer
+          type: array
+        type: array
+    required:
+    - data
+    type: object
+  shared.ChainAttributes:
+    properties:
+      chain_params:
+        description: ChainParams is the parameters of the chain.
+      chain_type:
+        description: ChainType is the type of the chain.
+        type: string
+      icon:
+        description: Icon is the icon of the chain.
+        type: string
+      name:
+        description: Name is the name of the chain.
+        type: string
+    required:
+    - chain_params
+    - chain_type
+    - icon
+    - name
+    type: object
+  shared.ChainListResponse:
+    properties:
+      data:
+        description: Data is the list of chains.
+        items:
+          $ref: '#/definitions/github_com_quantum-bridge_core_cmd_service_shared.Chain'
+        type: array
+      included:
+        description: Included is the included object in the response.
+        items:
+          items:
+            type: integer
+          type: array
+        type: array
+    required:
+    - data
+    type: object
+  shared.ChainRelationships:
+    properties:
+      tokens:
+        allOf:
+        - $ref: '#/definitions/shared.RelationCollection'
+        description: Tokens is the tokens that are used in the chain.
+    required:
+    - tokens
+    type: object
+  shared.EntityType:
+    enum:
+    - balance
+    - chain
+    - evm_transaction
+    - nft
+    - processed_transaction
+    - token
+    type: string
+    x-enum-varnames:
+    - BALANCE
+    - CHAIN
+    - EVM_TRANSACTION
+    - NFT
+    - PROCESSED_TRANSACTION
+    - TOKEN
+  shared.Key:
+    properties:
+      id:
+        description: ID is the identifier of the entity.
+        type: string
+      type:
+        allOf:
+        - $ref: '#/definitions/shared.EntityType'
+        description: Type is the type of the entity.
+    required:
+    - id
+    - type
+    type: object
+  shared.NFTAttributes:
+    properties:
+      animation_url:
+        description: AnimationURL is the animation URL of the NFT.
+        type: string
+      attributes:
+        description: Attributes is the list of attributes of the NFT.
+        items:
+          $ref: '#/definitions/github_com_quantum-bridge_core_cmd_service_shared.NFTAttribute'
+        type: array
+      description:
+        description: Description is the description of the NFT.
+        type: string
+      external_url:
+        description: ExternalURL is the external URL of the NFT.
+        type: string
+      image_url:
+        description: ImageURL is the image URL of the NFT.
+        type: string
+      metadata_url:
+        description: MetadataURL is the metadata URL of the NFT.
+        type: string
+      name:
+        description: Name is the name of the NFT.
+        type: string
+    required:
+    - attributes
+    - image_url
+    - metadata_url
+    - name
+    type: object
+  shared.NFTData:
+    properties:
+      attributes:
+        allOf:
+        - $ref: '#/definitions/shared.NFTAttributes'
+        description: Attributes is the attributes of the NFT entity.
+      key:
+        allOf:
+        - $ref: '#/definitions/shared.Key'
+        description: Key is the key of the NFT entity.
+    required:
+    - attributes
+    - key
+    type: object
+  shared.NFTResponse:
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/shared.NFTData'
+        description: Data is the NFT.
+      included:
+        description: Includes is the included object in the response.
+        items:
+          items:
+            type: integer
+          type: array
+        type: array
+    required:
+    - data
+    type: object
+  shared.RelationCollection:
+    properties:
+      data:
+        description: Data is list of Key objects.
+        items:
+          $ref: '#/definitions/shared.Key'
+        type: array
+    required:
+    - data
+    type: object
+  shared.TokenAttributes:
+    properties:
+      icon:
+        description: Icon is the icon of the token.
+        type: string
+      name:
+        description: Name is the name of the token.
+        type: string
+      symbol:
+        description: Symbol is the symbol of the token.
+        type: string
+      token_type:
+        allOf:
+        - $ref: '#/definitions/data.TokenType'
+        description: TokenType is the type of the token.
+    required:
+    - name
+    - symbol
+    - token_type
+    type: object
+  shared.TokenListResponse:
+    properties:
+      data:
+        description: Data is the list of tokens.
+        items:
+          $ref: '#/definitions/github_com_quantum-bridge_core_cmd_service_shared.Token'
+        type: array
+      included:
+        description: Included is the included object in the response.
+        items:
+          items:
+            type: integer
+          type: array
+        type: array
+    required:
+    - data
+    type: object
+  shared.TokenRelationships:
+    properties:
+      chains:
+        allOf:
+        - $ref: '#/definitions/shared.RelationCollection'
+        description: Chains is the chains that are used by the token.
+    required:
+    - chains
+    type: object
+  shared.TransactionsResponse:
     properties:
       data:
         description: Data is the body of transaction that is returned in the response.
@@ -28,6 +421,8 @@ definitions:
             type: integer
           type: array
         type: array
+    required:
+    - data
     type: object
 host: localhost:8000
 info:
@@ -37,6 +432,146 @@ info:
   title: Core bridge API
   version: "1.0"
 paths:
+  /chains:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of chains and tokens based on the request.
+      operationId: getChains
+      parameters:
+      - description: 'Filter by chain type. Items Value: [`''evm''`]'
+        in: query
+        name: filter[chain_type]
+        type: array
+      - description: Include tokens in the response
+        in: query
+        name: include_tokens
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/shared.ChainListResponse'
+        "400":
+          description: Bad request
+        "500":
+          description: Internal server error
+      summary: Get chains list
+      tags:
+      - Chains
+  /tokens:
+    get:
+      consumes:
+      - application/json
+      description: Get the list of tokens based on the filter type and include chains
+        flag.
+      operationId: getTokens
+      parameters:
+      - description: 'Include chains in the response. Items Value: [`true`, `false`]'
+        in: path
+        name: include_chains
+        type: boolean
+      - description: 'Filter by chain type. Items Value: [`''chain''`]'
+        in: query
+        name: filter[token_type]
+        type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/shared.TokenListResponse'
+        "400":
+          description: Bad request
+        "500":
+          description: Internal server error
+      summary: Get Tokens
+      tags:
+      - Tokens
+  /tokens/{token_id}/balance:
+    get:
+      consumes:
+      - application/json
+      description: Get the balance of an account for a token.
+      operationId: getBalance
+      parameters:
+      - description: Token ID
+        in: path
+        name: token_id
+        required: true
+        type: string
+      - description: Address of the account
+        in: query
+        name: address
+        required: true
+        type: string
+      - description: Chain ID
+        in: query
+        name: chain
+        required: true
+        type: string
+      - description: NFT ID
+        in: query
+        name: nft
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/shared.BalanceResponse'
+        "400":
+          description: Bad request
+        "404":
+          description: Not found
+        "500":
+          description: Internal server error
+      summary: Get Balance
+      tags:
+      - Tokens
+  /tokens/{token_id}/nfts/{nft_id}:
+    get:
+      consumes:
+      - application/json
+      description: Get the metadata of a non-fungible token based on the token ID
+        and NFT ID.
+      operationId: getNFT
+      parameters:
+      - description: Token ID
+        in: path
+        name: token_id
+        required: true
+        type: string
+      - description: NFT ID
+        in: path
+        name: nft_id
+        required: true
+        type: string
+      - description: Chain ID
+        in: query
+        name: chain_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/shared.NFTResponse'
+        "400":
+          description: Bad request
+        "404":
+          description: Not found
+        "500":
+          description: Internal server error
+      summary: Get NFT metadata
+      tags:
+      - Tokens
   /transfers/approve:
     post:
       consumes:
@@ -57,7 +592,7 @@ paths:
         "200":
           description: Successful operation
           schema:
-            $ref: '#/definitions/responses.TransactionsResponse'
+            $ref: '#/definitions/shared.TransactionsResponse'
         "204":
           description: No content
         "400":
@@ -67,6 +602,65 @@ paths:
         "500":
           description: Internal server error
       summary: Approve
+      tags:
+      - Transfers
+  /transfers/lock:
+    post:
+      consumes:
+      - application/json
+      description: Generates transaction that will lock a token in the source chain.
+      operationId: lock
+      parameters:
+      - description: Request body
+        in: body
+        name: _
+        required: true
+        schema:
+          $ref: '#/definitions/requests.LockDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/shared.TransactionsResponse'
+        "400":
+          description: Bad request
+        "404":
+          description: Not found
+        "500":
+          description: Internal server error
+      summary: Lock Token
+      tags:
+      - Transfers
+  /transfers/withdraw:
+    post:
+      consumes:
+      - application/json
+      description: Check if lock transaction is valid and withdraw the token from
+        the bridge. Returns the transaction
+      operationId: withdraw
+      parameters:
+      - description: Request body
+        in: body
+        name: _
+        required: true
+        schema:
+          $ref: '#/definitions/requests.WithdrawDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/shared.TransactionsResponse'
+        "400":
+          description: Bad request
+        "404":
+          description: Not found
+        "500":
+          description: Internal server error
+      summary: Withdraw
       tags:
       - Transfers
 schemes:
