@@ -507,6 +507,9 @@ const docTemplate = `{
         },
         "requests.LockDTO": {
             "type": "object",
+            "required": [
+                "data"
+            ],
             "properties": {
                 "data": {
                     "description": "Data is the data of the lock request.",
@@ -549,7 +552,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "nft_id": {
-                    "description": "NFTID is the ID of the NFT being locked in the chain.",
+                    "description": "NFT is the ID of the NFT being locked in the chain.",
                     "type": "string"
                 },
                 "to": {
@@ -590,16 +593,8 @@ const docTemplate = `{
                     "description": "ChainFrom is the source chain ID.",
                     "type": "string"
                 },
-                "event_index": {
-                    "description": "EventIndex Index of the event in the source chain that locked the token, Must be used only if lock transaction has a few locking events.",
-                    "type": "integer"
-                },
                 "from": {
                     "description": "From is the address of the sender in the destination chain. Should be used only if the sender address is different with source chain.",
-                    "type": "string"
-                },
-                "raw_tx_data": {
-                    "description": "RawTxData is the raw transaction data with signatures.",
                     "type": "string"
                 },
                 "token_id": {
