@@ -11,7 +11,7 @@ import (
 )
 
 // CheckFungible checks the status of the given fungible token transfer.
-func (p *proxyEVM) CheckFungible(txHash string, eventIndex int, tokenChain datashared.TokenChain) (*datashared.FungibleLock, error) {
+func (p *proxyEVM) CheckFungible(txHash string, tokenChain datashared.TokenChain) (*datashared.FungibleLock, error) {
 	// Get the transaction receipt for the given transaction hash.
 	to, err := p.getTxReceipt(txHash)
 	if err != nil {
@@ -21,21 +21,21 @@ func (p *proxyEVM) CheckFungible(txHash string, eventIndex int, tokenChain datas
 	// Switch on the token type to check the status of the given fungible token transfer.
 	switch tokenChain.TokenType {
 	case TokenERC20:
-		return p.checkFungibleERC20(to, eventIndex, tokenChain)
+		return p.checkFungibleERC20(to, tokenChain)
 	case TokenERC1155:
-		return p.checkFungibleERC1155(to, eventIndex, tokenChain)
+		return p.checkFungibleERC1155(to, tokenChain)
 	default:
 		return &datashared.FungibleLock{}, errors.New("unsupported type of token")
 	}
 }
 
 // checkFungibleERC20 checks the status of the given ERC20 token transfer.
-func (p *proxyEVM) checkFungibleERC20(to *types.Receipt, eventIndex int, tokenChain datashared.TokenChain) (*datashared.FungibleLock, error) {
+func (p *proxyEVM) checkFungibleERC20(to *types.Receipt, tokenChain datashared.TokenChain) (*datashared.FungibleLock, error) {
 	// Create a new BridgeDepositedERC20 log object.
 	log := bridge.BridgeDepositedERC20{}
 
 	// Get the bridge event log for the given event index.
-	err := p.getBridgeEvent(&log, depositERC20Event, eventIndex, to)
+	err := p.getBridgeEvent(&log, depositERC20Event, to)
 	if err != nil {
 		return &datashared.FungibleLock{}, err
 	}
@@ -71,12 +71,12 @@ func (p *proxyEVM) checkFungibleERC20(to *types.Receipt, eventIndex int, tokenCh
 }
 
 // checkFungibleERC1155 checks the status of the given ERC1155 token transfer.
-func (p *proxyEVM) checkFungibleERC1155(to *types.Receipt, eventIndex int, tokenChain datashared.TokenChain) (*datashared.FungibleLock, error) {
+func (p *proxyEVM) checkFungibleERC1155(to *types.Receipt, tokenChain datashared.TokenChain) (*datashared.FungibleLock, error) {
 	// Create a new BridgeDepositedERC1155 log object to get the event log.
 	log := bridge.BridgeDepositedERC1155{}
 
 	// Get the bridge event log for the given event index.
-	err := p.getBridgeEvent(&log, depositERC1155Event, eventIndex, to)
+	err := p.getBridgeEvent(&log, depositERC1155Event, to)
 	if err != nil {
 		return &datashared.FungibleLock{}, err
 	}

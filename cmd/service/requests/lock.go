@@ -11,22 +11,23 @@ type LockRequest struct {
 	//Amount is the amount of tokens to lock.
 	Amount *big.Int `json:"amount,omitempty"`
 	// ChainFrom is the chain that the lock is from.
-	ChainFrom string `json:"chain_from"`
+	ChainFrom string `json:"chain_from" binding:"required"`
 	// ChainTo is the chain that is receiving the amount of tokens.
-	ChainTo string `json:"chain_to"`
+	ChainTo string `json:"chain_to" binding:"required"`
 	// From is the sender address of the lock.
-	From string `json:"from"`
+	From string `json:"from" binding:"required"`
 	// To is the receiver address of the lock.
-	To string `json:"to"`
+	To string `json:"to" binding:"required"`
 	// TokenID is the ID of the token being locked in the chain.
-	TokenID string `json:"token_id"`
-	// NFTID is the ID of the NFT being locked in the chain.
-	NFTID *string `json:"nft_id,omitempty"`
+	TokenID string `json:"token_id" binding:"required"`
+	// NFT is the ID of the NFT being locked in the chain.
+	NFT *string `json:"nft_id,omitempty"`
 }
 
 // LockDTO is the data transfer object for the Lock request.
 type LockDTO struct {
-	Data LockRequest `json:"data"`
+	// Data is the data of the lock request.
+	Data LockRequest `json:"data" binding:"required"`
 }
 
 // NewLockRequest creates a new LockDTO from an HTTP request.

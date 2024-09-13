@@ -1,6 +1,6 @@
 module github.com/quantum-bridge/core
 
-go 1.22.2
+go 1.22
 
 require (
 	github.com/ethereum/go-ethereum v1.13.14

@@ -17,6 +17,4 @@ var (
 	ErrWrongLockEvent = errors.New("wrong lock event")
 	// ErrAlreadyWithdrawn is an error that is returned when a withdrawal is already done.
 	ErrAlreadyWithdrawn = errors.New("already withdrawn")
-	// ErrWrongSignedTx is an error that is returned when a signed transaction does not match the tx log.
-	ErrWrongSignedTx = errors.New("wrong signed transaction: signed tx does not match the tx log")
 )

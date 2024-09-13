@@ -12,7 +12,7 @@ func (c *config) Listener() net.Listener {
 	c.onceListener.Do(func() {
 		// Create a struct to hold the listener.
 		cfg := struct {
-			Addr string `config:"addr,required"`
+			Addr string `config:"port,required"`
 		}{}
 
 		// Get the data map from the getter.

@@ -8,6 +8,18 @@ import (
 )
 
 // GetChains is an HTTP handler that returns a list of chains and tokens based on the request.
+// @Summary Get chains list
+// @Description Get a list of chains and tokens based on the request.
+// @ID getChains
+// @Tags Chains
+// @Accept json
+// @Produce json
+// @Param filter[chain_type] query array false "Filter by chain type. Items Value: [`'evm'`]"
+// @Param include_tokens query bool false "Include tokens in the response"
+// @Success 200 {object} shared.ChainListResponse "Successful operation"
+// @Failure 400 "Bad request"
+// @Failure 500 "Internal server error"
+// @Router /chains [get]
 func GetChains(w http.ResponseWriter, r *http.Request) {
 	// Parse the request to get the filter type and include tokens.
 	request, err := requests.NewGetChainsRequest(r)
@@ -61,7 +73,7 @@ func GetChains(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Convert the map back to a slice.
-		tokens = make([]datashared.Token, len(filteredTokens))
+		tokens = make([]datashared.Token, 0, len(filteredTokens))
 		for _, token := range filteredTokens {
 			tokens = append(tokens, *token)
 		}

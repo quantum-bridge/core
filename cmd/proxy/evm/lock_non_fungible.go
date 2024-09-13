@@ -9,7 +9,7 @@ import (
 )
 
 // LockNonFungible locks the given non-fungible token for the bridge contract to transfer the tokens.
-func (p *proxyEVM) LockNonFungible(tokenChain datashared.TokenChain, from string, to string, network string, tokenId string) (interface{}, error) {
+func (p *proxyEVM) LockNonFungible(tokenChain datashared.TokenChain, from, to, network, tokenId string) (interface{}, error) {
 	// Convert from address to common.Address type.
 	fromAddress := common.HexToAddress(from)
 
@@ -40,7 +40,7 @@ func (p *proxyEVM) LockNonFungible(tokenChain datashared.TokenChain, from string
 }
 
 // lockERC721 locks the given ERC721 token to be transferred to the destination chain.
-func (p *proxyEVM) lockERC721(tokenChain datashared.TokenChain, from, to common.Address, network, tokenId string) (*types.Transaction, error) {
+func (p *proxyEVM) lockERC721(tokenChain datashared.TokenChain, fromAddress, toAddress common.Address, network, tokenId string) (*types.Transaction, error) {
 	// Convert the token ID to big.Int type.
 	tokenIDBigInt, ok := new(big.Int).SetString(tokenId, 10)
 	if !ok {
@@ -55,10 +55,10 @@ func (p *proxyEVM) lockERC721(tokenChain datashared.TokenChain, from, to common.
 
 	// Create a new transaction object for the lock of the ERC721 token to be transferred to the destination chain.
 	tx, err := p.bridge.DepositERC721(
-		buildTransactionOptions(from, nil),
+		buildTransactionOptions(fromAddress, nil),
 		common.HexToAddress(tokenChain.TokenAddress),
 		tokenIDBigInt,
-		to,
+		toAddress,
 		network,
 		isMintable,
 	)
@@ -67,7 +67,7 @@ func (p *proxyEVM) lockERC721(tokenChain datashared.TokenChain, from, to common.
 }
 
 // lockERC1155NonFungible locks the given ERC1155 token to be transferred to the destination chain.
-func (p *proxyEVM) lockERC1155NonFungible(tokenChain datashared.TokenChain, from, to common.Address, network, tokenId string) (*types.Transaction, error) {
+func (p *proxyEVM) lockERC1155NonFungible(tokenChain datashared.TokenChain, fromAddress, toAddress common.Address, network, tokenId string) (*types.Transaction, error) {
 	// Convert the token ID to big.Int type.
 	tokenIDBigInt, ok := new(big.Int).SetString(tokenId, 10)
 	if !ok {
@@ -82,11 +82,11 @@ func (p *proxyEVM) lockERC1155NonFungible(tokenChain datashared.TokenChain, from
 
 	// Create a new transaction object for the lock of the ERC1155 token to be transferred to the destination chain.
 	tx, err := p.bridge.DepositERC1155(
-		buildTransactionOptions(from, nil),
+		buildTransactionOptions(fromAddress, nil),
 		common.HexToAddress(tokenChain.TokenAddress),
 		tokenIDBigInt,
 		big.NewInt(1),
-		to.Hex(),
+		toAddress.Hex(),
 		network,
 		isMintable,
 	)

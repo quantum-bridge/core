@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/quantum-bridge/core/cmd/data/repositories"
 	"github.com/quantum-bridge/core/cmd/proxy"
-	"github.com/quantum-bridge/core/cmd/proxy/evm/signature"
 	"go.uber.org/zap"
 )
 
@@ -21,8 +20,6 @@ const (
 	chainsCtx
 	// tokenChainsCtx is the context key for the token chains repository.
 	tokenChainsCtx
-	// signerCtx is the context key for the signer.
-	signerCtx
 	// proxyCtx is the context key for the proxy.
 	proxyCtx
 )
@@ -55,13 +52,6 @@ func TokenChainsContextMiddleware(tokenChainsRepository repositories.TokenChains
 	}
 }
 
-// SignerContextMiddleware is a middleware that adds the signer to the context.
-func SignerContextMiddleware(signer signature.Signer) func(ctx context.Context) context.Context {
-	return func(ctx context.Context) context.Context {
-		return context.WithValue(ctx, signerCtx, signer)
-	}
-}
-
 // ProxyContextMiddleware is a middleware that adds the proxy to the context.
 func ProxyContextMiddleware(proxy proxy.Proxy) func(ctx context.Context) context.Context {
 	return func(ctx context.Context) context.Context {
@@ -87,11 +77,6 @@ func Chains(ctx context.Context) repositories.ChainsRepository {
 // TokenChains returns the token chains repository from the RAM cache.
 func TokenChains(ctx context.Context) repositories.TokenChainsRepository {
 	return ctx.Value(tokenChainsCtx).(repositories.TokenChainsRepository).New()
-}
-
-// Signer returns the signer from the RAM cache.
-func Signer(ctx context.Context) signature.Signer {
-	return ctx.Value(signerCtx).(signature.Signer)
 }
 
 // Proxy returns the proxy from the RAM cache. Proxy is used to make requests to the blockchain.

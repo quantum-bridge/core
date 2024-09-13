@@ -50,7 +50,7 @@ func (p *proxyEVM) getTxReceipt(txHash string) (*types.Receipt, error) {
 }
 
 // getBridgeEvent returns the bridge event from the given receipt by the given log name and event index.
-func (p *proxyEVM) getBridgeEvent(dest interface{}, logName string, eventIndex int, receipt *types.Receipt) error {
+func (p *proxyEVM) getBridgeEvent(dest interface{}, logName string, receipt *types.Receipt) error {
 	// Get the bridge ABI to unpack the log.
 	abi, err := bridge.BridgeMetaData.GetAbi()
 	if err != nil {
@@ -60,24 +60,29 @@ func (p *proxyEVM) getBridgeEvent(dest interface{}, logName string, eventIndex i
 	// Create a new bound contract with the bridge ABI.
 	contract := bind.NewBoundContract(common.Address{}, *abi, nil, nil, nil)
 
-	// iterate over the logs in the receipt
-	index := 0
+	// Get the ID of the event we're interested in.
+	eventID := abi.Events[logName].ID
+
+	// Iterate over the logs in the receipt.
 	for _, log := range receipt.Logs {
 		if log == nil {
+			continue
+		}
+
+		// Check if the log's topic[0] matches the eventID.
+		if log.Topics[0] != eventID {
 			continue
 		}
 
 		// Unpack the log with the given log name.
 		err = contract.UnpackLog(dest, logName, *log)
 		if err != nil {
-			// If the log cannot be unpacked, continue with the next log.
-			if index == eventIndex {
-				// If the event index is reached, return nil.
-				return nil
-			}
-
-			index++
+			// If the log cannot be unpacked, increment the index and continue with the next log.
+			continue
 		}
+
+		// If the log is successfully unpacked and the event index is reached, return nil.
+		return nil
 	}
 
 	// If the event index is not found, return an error.
@@ -85,9 +90,9 @@ func (p *proxyEVM) getBridgeEvent(dest interface{}, logName string, eventIndex i
 }
 
 // checkHash checks if the given transaction hash contains the given event index.
-func (p *proxyEVM) checkHash(txHash string, eventIndex int) error {
+func (p *proxyEVM) checkHash(txHash string) error {
 	// Check if the transaction hash contains the given event index.
-	containsHash, err := p.bridge.CheckHash(&bind.CallOpts{}, common.HexToHash(txHash), big.NewInt(int64(eventIndex)))
+	containsHash, err := p.bridge.CheckHash(&bind.CallOpts{}, common.HexToHash(txHash), big.NewInt(int64(defaultEventIndex)))
 	if err != nil {
 		return errors.Wrap(err, "failed to check hash")
 	}

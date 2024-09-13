@@ -12,6 +12,18 @@ import (
 var One = big.NewInt(1000000000000000000)
 
 // Lock is an HTTP handler that locks a token from one chain to another.
+// @Summary Lock Token
+// @Description Generates transaction that will lock a token in the source chain.
+// @ID lock
+// @Tags Transfers
+// @Accept json
+// @Produce json
+// @Param _ body requests.LockDTO true "Request body"
+// @Success 200 {object} shared.TransactionsResponse "Successful operation"
+// @Failure 400 "Bad request"
+// @Failure 404 "Not found"
+// @Failure 500 "Internal server error"
+// @Router /transfers/lock [post]
 func Lock(w http.ResponseWriter, r *http.Request) {
 	// Parse the request to get the token ID.
 	request, err := requests.NewLockRequest(r)
@@ -51,7 +63,7 @@ func Lock(w http.ResponseWriter, r *http.Request) {
 
 	// Check if the destination token chain is a liquidity pool.
 	if destinationTokenChain.BridgeType == data.BridgeTypeLP {
-		balance, err := Proxy(r.Context()).Get(tokenChain.TokenID).BridgeBalance(*destinationTokenChain, request.NFTID)
+		balance, err := Proxy(r.Context()).Get(destinationTokenChain.ChainID).BridgeBalance(*destinationTokenChain, request.NFT)
 		if err != nil {
 			Log(r.Context()).Errorf("failed to get balance: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -85,16 +97,16 @@ func Lock(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		tx, err = Proxy(r.Context()).Get(tokenChain.TokenID).LockFungible(*tokenChain, request.From, request.To, request.ChainTo, request.Amount.String())
+		tx, err = Proxy(r.Context()).Get(tokenChain.ChainID).LockFungible(*tokenChain, request.From, request.To, request.ChainTo, request.Amount.String())
 	case data.NONFUNGIBLE:
-		if request.NFTID == nil {
+		if request.NFT == nil {
 			Log(r.Context()).Error("nft id is required for non-fungible tokens")
 			http.Error(w, "nft id is required for non-fungible tokens", http.StatusBadRequest)
 
 			return
 		}
 
-		tx, err = Proxy(r.Context()).Get(tokenChain.TokenID).LockNonFungible(*tokenChain, request.From, request.To, request.ChainTo, *request.NFTID)
+		tx, err = Proxy(r.Context()).Get(tokenChain.ChainID).LockNonFungible(*tokenChain, request.From, request.To, request.ChainTo, *request.NFT)
 	default:
 		Log(r.Context()).Errorf("unsupported token type: %v, token ID: %v", token.Type, token.ID)
 		http.Error(w, "unsupported token type", http.StatusBadRequest)
@@ -117,6 +129,7 @@ func Lock(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Create the response for the transaction.
 	response, err := responses.NewTransactionResponse(tx, *chain)
 	if err != nil {
 		Log(r.Context()).Errorf("failed to create response: %v", err)

@@ -23,19 +23,19 @@ const (
 
 // proxyEVM is the EVM proxy implementation.
 type proxyEVM struct {
-	client                *ethclient.Client
-	signer                signature.Signer
-	chainID               *big.Int
-	bridgeContractAddress common.Address
-	bridge                *bridge.Bridge
-	ipfs                  ipfs.IPFS
-	confirmations         int64
+	client        *ethclient.Client
+	signer        signature.Signer
+	chainID       *big.Int
+	bridgeAddress common.Address
+	bridge        *bridge.Bridge
+	ipfs          ipfs.IPFS
+	confirmations int64
 }
 
 // NewProxy creates a new EVM proxy with the given RPC URL, signer, bridge contract address, IPFS client and number of confirmations.
-func NewProxy(rpc string, signer signature.Signer, bridgeContractAddress string, ipfs ipfs.IPFS, confirmations int64) (proxybridge.Bridge, error) {
+func NewProxy(RPC, bridgeAddress string, signer signature.Signer, ipfs ipfs.IPFS, confirmations int64) (proxybridge.Bridge, error) {
 	// Dial the Ethereum client with the given RPC URL.
-	client, err := ethclient.Dial(rpc)
+	client, err := ethclient.Dial(RPC)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to dial ethereum client")
 	}
@@ -47,19 +47,19 @@ func NewProxy(rpc string, signer signature.Signer, bridgeContractAddress string,
 	}
 
 	// Create a new bridge contract instance.
-	bridgeInstance, err := bridge.NewBridge(common.HexToAddress(bridgeContractAddress), client)
+	bridgeInstance, err := bridge.NewBridge(common.HexToAddress(bridgeAddress), client)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create bridge contract")
 	}
 
 	// Return the new EVM proxy.
 	return &proxyEVM{
-		client:                client,
-		signer:                signer,
-		chainID:               chainID,
-		bridgeContractAddress: common.HexToAddress(bridgeContractAddress),
-		bridge:                bridgeInstance,
-		ipfs:                  ipfs,
-		confirmations:         confirmations,
+		client:        client,
+		signer:        signer,
+		chainID:       chainID,
+		bridgeAddress: common.HexToAddress(bridgeAddress),
+		bridge:        bridgeInstance,
+		ipfs:          ipfs,
+		confirmations: confirmations,
 	}, nil
 }

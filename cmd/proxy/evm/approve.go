@@ -57,7 +57,7 @@ func (p *proxyEVM) approveERC20(tokenAddress, fromAddress common.Address) (*type
 	}
 
 	// Get the allowance of the token for the bridge contract.
-	allowance, err := token.Allowance(&bind.CallOpts{}, fromAddress, p.bridgeContractAddress)
+	allowance, err := token.Allowance(&bind.CallOpts{}, fromAddress, p.bridgeAddress)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get allowance")
 	}
@@ -68,7 +68,7 @@ func (p *proxyEVM) approveERC20(tokenAddress, fromAddress common.Address) (*type
 	}
 
 	// Create a new transaction to approve the token for the bridge contract with the maximum amount without executing the transaction in the blockchain.
-	tx, err := token.Approve(buildTransactionOptions(fromAddress, nil), p.bridgeContractAddress, abi.MaxUint256)
+	tx, err := token.Approve(buildTransactionOptions(fromAddress, nil), p.bridgeAddress, abi.MaxUint256)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to approve")
 	}
@@ -77,7 +77,7 @@ func (p *proxyEVM) approveERC20(tokenAddress, fromAddress common.Address) (*type
 }
 
 // approveERC721 approves the given ERC721 token for the bridge contract.
-func (p *proxyEVM) approveERC721(tokenAddress, from common.Address) (*types.Transaction, error) {
+func (p *proxyEVM) approveERC721(tokenAddress, fromAddress common.Address) (*types.Transaction, error) {
 	// Create a new ERC721 contract instance.
 	token, err := erc721.NewErc721(tokenAddress, p.client)
 	if err != nil {
@@ -85,7 +85,7 @@ func (p *proxyEVM) approveERC721(tokenAddress, from common.Address) (*types.Tran
 	}
 
 	// Check if the token is already approved for the bridge contract.
-	approved, err := token.IsApprovedForAll(nil, from, p.bridgeContractAddress)
+	approved, err := token.IsApprovedForAll(nil, fromAddress, p.bridgeAddress)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to check approval")
 	}
@@ -96,7 +96,7 @@ func (p *proxyEVM) approveERC721(tokenAddress, from common.Address) (*types.Tran
 	}
 
 	// Create a new transaction to approve the token for the bridge contract with the maximum amount without executing the transaction in the blockchain.
-	tx, err := token.SetApprovalForAll(buildTransactionOptions(from, nil), p.bridgeContractAddress, true)
+	tx, err := token.SetApprovalForAll(buildTransactionOptions(fromAddress, nil), p.bridgeAddress, true)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to approve")
 	}
@@ -105,7 +105,7 @@ func (p *proxyEVM) approveERC721(tokenAddress, from common.Address) (*types.Tran
 }
 
 // approveERC1155 approves the given ERC1155 token for the bridge contract.
-func (p *proxyEVM) approveERC1155(tokenAddress, from common.Address) (*types.Transaction, error) {
+func (p *proxyEVM) approveERC1155(tokenAddress, fromAddress common.Address) (*types.Transaction, error) {
 	// Create a new ERC1155 contract instance.
 	token, err := erc1155.NewErc1155(tokenAddress, p.client)
 	if err != nil {
@@ -113,7 +113,7 @@ func (p *proxyEVM) approveERC1155(tokenAddress, from common.Address) (*types.Tra
 	}
 
 	// Check if the token is already approved for the bridge contract.
-	approved, err := token.IsApprovedForAll(nil, from, p.bridgeContractAddress)
+	approved, err := token.IsApprovedForAll(nil, fromAddress, p.bridgeAddress)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to check approval")
 	}
@@ -124,7 +124,7 @@ func (p *proxyEVM) approveERC1155(tokenAddress, from common.Address) (*types.Tra
 	}
 
 	// Create a new transaction to approve the token for the bridge contract with the maximum amount without executing the transaction in the blockchain.
-	tx, err := token.SetApprovalForAll(buildTransactionOptions(from, nil), p.bridgeContractAddress, true)
+	tx, err := token.SetApprovalForAll(buildTransactionOptions(fromAddress, nil), p.bridgeAddress, true)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to approve")
 	}

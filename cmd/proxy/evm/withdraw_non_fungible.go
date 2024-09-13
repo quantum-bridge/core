@@ -10,9 +10,9 @@ import (
 )
 
 // WithdrawNonFungible withdraws the given non-fungible token to the given address.
-func (p *proxyEVM) WithdrawNonFungible(tokenChain datashared.TokenChain, from, to, txHash string, eventIndex int, tokenID, tokenURI string, RawTxData *[]byte) (interface{}, error) {
+func (p *proxyEVM) WithdrawNonFungible(tokenChain datashared.TokenChain, from, to, txHash, tokenID, tokenURI string) (interface{}, error) {
 	// Check if the hash isn't already used.
-	if err := p.checkHash(txHash, eventIndex); err != nil {
+	if err := p.checkHash(txHash); err != nil {
 		return nil, errors.Wrapf(err, "failed to check hash %s", txHash)
 	}
 
@@ -35,9 +35,9 @@ func (p *proxyEVM) WithdrawNonFungible(tokenChain datashared.TokenChain, from, t
 	// Switch on the token type to create the transaction object for the withdrawal of the token to be transferred to the destination chain.
 	switch tokenChain.TokenType {
 	case TokenERC721:
-		tx, err = p.withdrawERC721(tokenChain, fromAddress, txHash, to, tokenID, tokenURI, eventIndex)
+		tx, err = p.withdrawERC721(tokenChain, fromAddress, txHash, to, tokenID, tokenURI)
 	case TokenERC1155:
-		tx, err = p.withdrawERC1155NonFungible(tokenChain, fromAddress, txHash, to, tokenID, tokenURI, eventIndex)
+		tx, err = p.withdrawERC1155NonFungible(tokenChain, fromAddress, txHash, to, tokenID, tokenURI)
 	default:
 		return nil, errors.New("unsupported type of token")
 	}
@@ -47,15 +47,6 @@ func (p *proxyEVM) WithdrawNonFungible(tokenChain datashared.TokenChain, from, t
 	}
 
 	signNumber := int64(1)
-
-	// Check if RawTxData is provided and add the signature to the transaction.
-	if RawTxData != nil {
-		// Add the signature to the transaction and get the new transaction object with the signNumber.
-		tx, signNumber, err = p.addSignature(buildTransactionOptions(fromAddress, nil), tx, *RawTxData)
-		if err != nil {
-			return nil, errors.Wrap(err, "failed to add signature")
-		}
-	}
 
 	// Check if the number of signatures is greater or equal to the threshold.
 	confirmed := signNumber >= int64(threshold)
@@ -70,7 +61,7 @@ func (p *proxyEVM) WithdrawNonFungible(tokenChain datashared.TokenChain, from, t
 }
 
 // withdrawERC721 withdraws the given ERC721 token to the given address.
-func (p *proxyEVM) withdrawERC721(tokenChain datashared.TokenChain, fromAddress common.Address, txHash, to, tokenID string, tokenURI string, eventIndex int) (*types.Transaction, error) {
+func (p *proxyEVM) withdrawERC721(tokenChain datashared.TokenChain, fromAddress common.Address, txHash, to, tokenID string, tokenURI string) (*types.Transaction, error) {
 	// Convert the transaction hash to common.Hash type.
 	transactionHash := common.HexToHash(txHash)
 
@@ -92,7 +83,7 @@ func (p *proxyEVM) withdrawERC721(tokenChain datashared.TokenChain, fromAddress 
 		TokenID:      tokenIDBigInt,
 		To:           to,
 		TxHash:       transactionHash,
-		EventIndex:   eventIndex,
+		EventIndex:   defaultEventIndex,
 		ChainID:      p.chainID,
 		TokenURI:     tokenURI,
 		IsMintable:   isMintable,
@@ -111,7 +102,7 @@ func (p *proxyEVM) withdrawERC721(tokenChain datashared.TokenChain, fromAddress 
 		tokenIDBigInt,
 		common.HexToAddress(to),
 		transactionHash,
-		big.NewInt(int64(eventIndex)),
+		big.NewInt(int64(defaultEventIndex)),
 		tokenURI,
 		log.IsMintable,
 		[][]byte{signature},
@@ -119,7 +110,7 @@ func (p *proxyEVM) withdrawERC721(tokenChain datashared.TokenChain, fromAddress 
 }
 
 // withdrawERC1155NonFungible withdraws the given ERC1155 token to the given address.
-func (p *proxyEVM) withdrawERC1155NonFungible(tokenChain datashared.TokenChain, fromAddress common.Address, txHash, to, tokenID string, tokenURI string, eventIndex int) (*types.Transaction, error) {
+func (p *proxyEVM) withdrawERC1155NonFungible(tokenChain datashared.TokenChain, fromAddress common.Address, txHash, to, tokenID string, tokenURI string) (*types.Transaction, error) {
 	// Convert the transaction hash to common.Hash type.
 	transactionHash := common.HexToHash(txHash)
 
@@ -145,7 +136,7 @@ func (p *proxyEVM) withdrawERC1155NonFungible(tokenChain datashared.TokenChain, 
 		Amount:       amount,
 		To:           to,
 		TxHash:       transactionHash,
-		EventIndex:   eventIndex,
+		EventIndex:   defaultEventIndex,
 		ChainID:      p.chainID,
 		TokenURI:     tokenURI,
 		IsMintable:   isMintable,
@@ -165,7 +156,7 @@ func (p *proxyEVM) withdrawERC1155NonFungible(tokenChain datashared.TokenChain, 
 		amount,
 		common.HexToAddress(to),
 		transactionHash,
-		big.NewInt(int64(eventIndex)),
+		big.NewInt(int64(defaultEventIndex)),
 		tokenURI,
 		log.IsMintable,
 		[][]byte{signature},

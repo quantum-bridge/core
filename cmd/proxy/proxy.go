@@ -36,7 +36,7 @@ func NewProxy(chains []datashared.Chain, signer signature.Signer, ipfsClient ipf
 		// If the chain type is EVM, create a new EVM proxy.
 		case data.EVM:
 			// Create a new EVM proxy.
-			evmProxy, err := evm.NewProxy(chain.RpcEndpoint, signer, chain.BridgeContractAddress, ipfsClient, chain.Confirmations)
+			evmProxy, err := evm.NewProxy(chain.RpcEndpoint, chain.BridgeAddress, signer, ipfsClient, chain.Confirmations)
 			if err != nil {
 				return nil, errors.Wrapf(err, "failed to create EVM proxy for chain %s", chain.ID)
 			}

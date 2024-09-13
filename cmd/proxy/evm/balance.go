@@ -13,7 +13,7 @@ import (
 
 // BridgeBalance returns the balance of the given token for the bridge contract.
 func (p *proxyEVM) BridgeBalance(tokenChain datashared.TokenChain, tokenId *string) (*big.Int, error) {
-	return p.Balance(tokenChain, p.bridgeContractAddress.Hex(), tokenId)
+	return p.Balance(tokenChain, p.bridgeAddress.Hex(), tokenId)
 }
 
 // Balance returns the balance of the given token for the given address.

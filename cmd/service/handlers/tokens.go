@@ -8,6 +8,18 @@ import (
 )
 
 // GetTokens is an HTTP handler that returns a list of tokens based on the request.
+// @Summary Get Tokens
+// @Description Get the list of tokens based on the filter type and include chains flag.
+// @ID getTokens
+// @Tags Tokens
+// @Accept json
+// @Produce json
+// @Param include_chains path bool false "Include chains in the response. Items Value: [`true`, `false`]"
+// @Param filter[token_type] query array false "Filter by chain type. Items Value: [`'chain'`]"
+// @Success 200 {object} shared.TokenListResponse "Successful operation"
+// @Failure 400 "Bad request"
+// @Failure 500 "Internal server error"
+// @Router /tokens [get]
 func GetTokens(w http.ResponseWriter, r *http.Request) {
 	// Parse the request to get the filter type and include chains.
 	request, err := requests.NewGetTokensRequest(r)

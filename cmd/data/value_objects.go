@@ -24,16 +24,17 @@ const (
 	NONFUNGIBLE TokenType = "non-fungible"
 )
 
-func (t *ChainType) String() string {
-	return string(*t)
+// String returns the string representation of the chain type.
+func (t ChainType) String() string {
+	return string(t)
 }
 
 // String returns the string representation of the bridge type.
-func (t *BridgeType) String() string {
-	return string(*t)
+func (t BridgeType) String() string {
+	return string(t)
 }
 
 // String returns the string representation of the token type.
-func (t *TokenType) String() string {
-	return string(*t)
+func (t TokenType) String() string {
+	return string(t)
 }

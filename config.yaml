@@ -1,0 +1,65 @@
+# Listener section is used for configuring the web-service.
+listener:
+  port: :8000
+
+# Bridge section is used for configuring supported tokens and chains for the bridge.
+bridge:
+  # List of supported tokens.
+  tokens:
+    # Custom token ID that must be unique across all tokens in this config.
+    - id: ""
+      # Token name.
+      name: ""
+      # Token symbol.
+      symbol: ""
+      # Link to token icon that will be displayed in the web-client (optional).
+      icon: ""
+      # Token type: fungible/non-fungible.
+      type:
+      # Chains on which token could be bridged.
+      chains:
+        # Chain ID, must be the same as id in chains definitions.
+        - chain_id: ""
+          # EVM token type: native/erc20/erc721/erc1155.
+          token_type:
+          # Token address for erc20/erc721/erc1155 tokens, for native tokens skip this field.
+          token_address: ""
+          # Bridging type: `liquidity_pool` (token locked/unlocked on bridge contract), `mintable` (token burned/minted).
+          bridge_type:
+          # Specify auto send true if you want to use bridge to send tokens instead of user.
+          auto_send:
+
+  # List of supported chains.
+  chains:
+    # Custom chain ID that must be unique across all chains in this config. Must not change it after first setup as it is used in contracts.
+    - id: ""
+      # Chain name.
+      name: ""
+      # Link to chain icon that will be displayed in the web-client (optional).
+      icon: ""
+      # Chain type. Supported chains for now: evm.
+      type: ""
+      # Address of the proxy contract that will be used for bridging.
+      bridge_address: ""
+      # Link to ethereum RPC endpoint (e.g. Infura).
+      rpc_endpoint: ""
+      # Number of confirmations needed for lock transaction to be confirmed before you will be able to withdraw tokens.
+      confirmations: 1
+      # Custom chain params for frontend.
+      chain_params:
+        # Chain ID in blockchain.
+        chain_id: 1
+        # Native currency symbol.
+        native_symbol: ""
+        # Explorer API URL.
+        api_url: ""
+
+# Signer section is used for signing transactions on different chains.
+signer:
+  # Private key of signer for EVM contracts (Bridge deployer).
+  evm_signer: ""
+
+# IPFS section is used for getting metadata from IPFS for Non-Fungible tokens.
+ipfs:
+  # Endpoint for IPFS client.
+  endpoint: "https://ipfs.io"

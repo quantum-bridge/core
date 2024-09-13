@@ -33,7 +33,7 @@ func (c *config) loadTokensAndChains() {
 		}{}
 
 		// Get the data map from the getter.
-		dataMap, err := c.getter.GetStringMap("data")
+		dataMap, err := c.getter.GetStringMap("bridge")
 		if err != nil {
 			panic(err)
 		}

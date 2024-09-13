@@ -1,0 +1,11 @@
+{
+  "name": "core",
+  "version": "1.0.0",
+  "dependencies": {
+    "@redocly/cli": "^1.19.0"
+  },
+  "private": true,
+  "scripts": {
+    "build": "npx @redocly/cli build-docs swagger.yaml"
+  }
+}

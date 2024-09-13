@@ -31,7 +31,6 @@ func (s *service) router() chi.Router {
 			handlers.TokensContextMiddleware(repositories.NewTokens(s.tokens)),
 			handlers.ChainsContextMiddleware(repositories.NewChains(s.chains)),
 			handlers.TokenChainsContextMiddleware(repositories.NewTokenChains(s.tokenChains)),
-			handlers.SignerContextMiddleware(s.signer),
 			handlers.ProxyContextMiddleware(proxies),
 		),
 		cors.Handler(cors.Options{
@@ -56,7 +55,7 @@ func (s *service) router() chi.Router {
 		r.Route("/transfers", func(r chi.Router) {
 			r.Post("/approve", handlers.Approve)
 			r.Post("/lock", handlers.Lock)
-			//	r.Post("/withdraw", handlers.Withdraw)
+			r.Post("/withdraw", handlers.Withdraw)
 		})
 	})
 

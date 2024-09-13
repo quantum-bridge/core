@@ -111,14 +111,14 @@ func (p *proxyEVM) getMetadata(url string, tokenId string) (*datashared.NFTMetad
 	metadata.Image = p.ipfs.CreateUrl(metadata.Image)
 
 	// Wrap the animation URL and external URL with the IPFS URL.
-	metadata.AnimationURL = p.wrapPointerIPFSURL(metadata.AnimationURL)
-	metadata.ExternalURL = p.wrapPointerIPFSURL(metadata.ExternalURL)
+	metadata.AnimationURL = p.createIPFSURL(metadata.AnimationURL)
+	metadata.ExternalURL = p.createIPFSURL(metadata.ExternalURL)
 
 	return metadata, nil
 }
 
-// wrapPointerIPFSURL wraps the given URL with the IPFS URL.
-func (p *proxyEVM) wrapPointerIPFSURL(url *string) *string {
+// createIPFSURL creates an IPFS URL with the given URL if it is not nil.
+func (p *proxyEVM) createIPFSURL(url *string) *string {
 	// Check if the URL is nil.
 	if url == nil {
 		return nil

@@ -23,7 +23,7 @@ func NewChainListResponse(chains []datashared.Chain, tokens []datashared.Token) 
 			Attributes: shared.ChainAttributes{
 				ChainParams: chain.ChainParams,
 				ChainType:   string(chain.Type),
-				Icon:        nil, // TODO: Add icon
+				Icon:        &chain.Icon,
 				Name:        chain.Name,
 			},
 			Relationships: shared.ChainRelationships{
@@ -49,7 +49,7 @@ func NewChainListResponse(chains []datashared.Chain, tokens []datashared.Token) 
 				Type: datashared.TOKEN,
 			},
 			Attributes: shared.TokenAttributes{
-				Icon:      nil, // TODO: Add icon
+				Icon:      &token.Icon,
 				Name:      token.Name,
 				Symbol:    token.Symbol,
 				TokenType: token.Type,
