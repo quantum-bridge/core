@@ -53,6 +53,8 @@ bridge:
         native_symbol: ""
         # Explorer API URL.
         api_url: ""
+        # Blockchain explorer URL.
+        explorer_url: ""
 
 # Signer section is used for signing transactions on different chains.
 signer:
