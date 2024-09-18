@@ -25,7 +25,7 @@ func (p *proxyEVM) getTxReceipt(txHash string) (*types.Receipt, error) {
 	// Get the transaction receipt for the given transaction hash.
 	receipt, err := p.client.TransactionReceipt(context.Background(), common.HexToHash(txHash))
 	if err != nil {
-		if err.Error() == "not found" {
+		if err.Error() == bridgeErrors.ErrNotFound.Error() {
 			return &types.Receipt{}, bridgeErrors.ErrTxNotFound
 		}
 	}
