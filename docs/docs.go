@@ -38,7 +38,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "boolean",
-                        "description": "Include tokens in the response",
+                        "description": "Include tokens in the response. Items Value: [` + "`" + `true` + "`" + `, ` + "`" + `false` + "`" + `]",
                         "name": "include_tokens",
                         "in": "query"
                     }
@@ -78,7 +78,7 @@ const docTemplate = `{
                         "type": "boolean",
                         "description": "Include chains in the response. Items Value: [` + "`" + `true` + "`" + `, ` + "`" + `false` + "`" + `]",
                         "name": "include_chains",
-                        "in": "path"
+                        "in": "query"
                     },
                     {
                         "type": "array",
