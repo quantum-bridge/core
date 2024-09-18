@@ -14,7 +14,7 @@ import (
 // @Tags Tokens
 // @Accept json
 // @Produce json
-// @Param include_chains path bool false "Include chains in the response. Items Value: [`true`, `false`]"
+// @Param include_chains query bool false "Include chains in the response. Items Value: [`true`, `false`]"
 // @Param filter[token_type] query array false "Filter by chain type. Items Value: [`'chain'`]"
 // @Success 200 {object} shared.TokenListResponse "Successful operation"
 // @Failure 400 "Bad request"

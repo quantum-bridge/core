@@ -15,7 +15,7 @@ import (
 // @Accept json
 // @Produce json
 // @Param filter[chain_type] query array false "Filter by chain type. Items Value: [`'evm'`]"
-// @Param include_tokens query bool false "Include tokens in the response"
+// @Param include_tokens query bool false "Include tokens in the response. Items Value: [`true`, `false`]"
 // @Success 200 {object} shared.ChainListResponse "Successful operation"
 // @Failure 400 "Bad request"
 // @Failure 500 "Internal server error"
