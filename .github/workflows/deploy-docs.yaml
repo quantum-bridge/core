@@ -13,11 +13,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Copy redoc-static.html to index.html
-        run: cp ./docs/redoc-static.html ./docs/index.html
+      - name: Rename redoc-static.html to index.html
+        run: mv ./docs/redoc-static.html ./docs/index.html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
