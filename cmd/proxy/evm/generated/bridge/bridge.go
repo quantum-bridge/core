@@ -31,7 +31,7 @@ var (
 
 // BridgeMetaData contains all meta data concerning the Bridge contract.
 var BridgeMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"}],\"name\":\"AddressEmptyCode\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ECDSAInvalidSignature\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"length\",\"type\":\"uint256\"}],\"name\":\"ECDSAInvalidSignatureLength\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"s\",\"type\":\"bytes32\"}],\"name\":\"ECDSAInvalidSignatureS\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"implementation\",\"type\":\"address\"}],\"name\":\"ERC1967InvalidImplementation\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ERC1967NonPayable\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"FailedInnerCall\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidInitialization\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"NotInitializing\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"OwnableInvalidOwner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"OwnableUnauthorizedAccount\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"UUPSUnauthorizedCallContext\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"slot\",\"type\":\"bytes32\"}],\"name\":\"UUPSUnsupportedProxiableUUID\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"to\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"network\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"isMintable\",\"type\":\"bool\"}],\"name\":\"DepositedERC1155\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"to\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"network\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"isMintable\",\"type\":\"bool\"}],\"name\":\"DepositedERC20\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"network\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"isMintable\",\"type\":\"bool\"}],\"name\":\"DepositedERC721\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"version\",\"type\":\"uint64\"}],\"name\":\"Initialized\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"implementation\",\"type\":\"address\"}],\"name\":\"Upgraded\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"UPGRADE_INTERFACE_VERSION\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"oracles_\",\"type\":\"address[]\"}],\"name\":\"addOracles\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"txHash_\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"txNonce_\",\"type\":\"uint256\"}],\"name\":\"checkHash\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token_\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId_\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount_\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"to_\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"network_\",\"type\":\"string\"},{\"internalType\":\"bool\",\"name\":\"isMintable_\",\"type\":\"bool\"}],\"name\":\"depositERC1155\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token_\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount_\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"to_\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"network_\",\"type\":\"string\"},{\"internalType\":\"bool\",\"name\":\"isMintable_\",\"type\":\"bool\"}],\"name\":\"depositERC20\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token_\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId_\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to_\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"network_\",\"type\":\"string\"},{\"internalType\":\"bool\",\"name\":\"isMintable_\",\"type\":\"bool\"}],\"name\":\"depositERC721\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token_\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId_\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount_\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to_\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"txHash_\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"txNonce_\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"chainId_\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"tokenURI_\",\"type\":\"string\"},{\"internalType\":\"bool\",\"name\":\"isMintable_\",\"type\":\"bool\"}],\"name\":\"getERC1155SignHash\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token_\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount_\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to_\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"txHash_\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"txNonce_\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"chainId_\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"isMintable_\",\"type\":\"bool\"}],\"name\":\"getERC20SignHash\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token_\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId_\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to_\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"txHash_\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"txNonce_\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"chainId_\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"tokenURI_\",\"type\":\"string\"},{\"internalType\":\"bool\",\"name\":\"isMintable_\",\"type\":\"bool\"}],\"name\":\"getERC721SignHash\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getOracles\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"name\":\"hashes\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"initialOwner_\",\"type\":\"address\"},{\"internalType\":\"address[]\",\"name\":\"oracles_\",\"type\":\"address[]\"},{\"internalType\":\"uint256\",\"name\":\"thresholdOracleSignatures_\",\"type\":\"uint256\"}],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"},{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"name\":\"onERC1155BatchReceived\",\"outputs\":[{\"internalType\":\"bytes4\",\"name\":\"\",\"type\":\"bytes4\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"name\":\"onERC1155Received\",\"outputs\":[{\"internalType\":\"bytes4\",\"name\":\"\",\"type\":\"bytes4\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"name\":\"onERC721Received\",\"outputs\":[{\"internalType\":\"bytes4\",\"name\":\"\",\"type\":\"bytes4\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"proxiableUUID\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"oracles_\",\"type\":\"address[]\"}],\"name\":\"removeOracles\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"interfaceId\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"thresholdOracleSignatures\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"thresholdOracleSignatures_\",\"type\":\"uint256\"}],\"name\":\"updateThresholdSignatures\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"upgradeToAndCall\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token_\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId_\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount_\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to_\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"txHash_\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"txNonce_\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"tokenURI_\",\"type\":\"string\"},{\"internalType\":\"bool\",\"name\":\"isMintable_\",\"type\":\"bool\"},{\"internalType\":\"bytes[]\",\"name\":\"signatures_\",\"type\":\"bytes[]\"}],\"name\":\"withdrawERC1155\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token_\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount_\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to_\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"txHash_\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"txNonce_\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"isMintable_\",\"type\":\"bool\"},{\"internalType\":\"bytes[]\",\"name\":\"signatures_\",\"type\":\"bytes[]\"}],\"name\":\"withdrawERC20\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token_\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId_\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to_\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"txHash_\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"txNonce_\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"tokenURI_\",\"type\":\"string\"},{\"internalType\":\"bool\",\"name\":\"isMintable_\",\"type\":\"bool\"},{\"internalType\":\"bytes[]\",\"name\":\"signatures_\",\"type\":\"bytes[]\"}],\"name\":\"withdrawERC721\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"}],\"name\":\"AddressEmptyCode\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"AddressInsufficientBalance\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ECDSAInvalidSignature\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"length\",\"type\":\"uint256\"}],\"name\":\"ECDSAInvalidSignatureLength\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"s\",\"type\":\"bytes32\"}],\"name\":\"ECDSAInvalidSignatureS\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"implementation\",\"type\":\"address\"}],\"name\":\"ERC1967InvalidImplementation\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ERC1967NonPayable\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"FailedInnerCall\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"HashNonceUsed\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidAmount\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidInitialization\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidSigners\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidThresholdSignatures\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"NotInitializing\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"OwnableInvalidOwner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"OwnableUnauthorizedAccount\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ReceiverNotSet\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"}],\"name\":\"SafeERC20FailedOperation\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"SignersAddressCannotBeZero\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"SignersExist\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ThresholdGreaterThanSigners\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ThresholdLessThanSignatures\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"TokenNotSet\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"UUPSUnauthorizedCallContext\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"slot\",\"type\":\"bytes32\"}],\"name\":\"UUPSUnsupportedProxiableUUID\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ZeroAmount\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ZeroReceiver\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ZeroToken\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"to\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"network\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"isMintable\",\"type\":\"bool\"}],\"name\":\"DepositedERC1155\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"to\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"network\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"isMintable\",\"type\":\"bool\"}],\"name\":\"DepositedERC20\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"network\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"isMintable\",\"type\":\"bool\"}],\"name\":\"DepositedERC721\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"string\",\"name\":\"network\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"DepositedNative\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"version\",\"type\":\"uint64\"}],\"name\":\"Initialized\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"implementation\",\"type\":\"address\"}],\"name\":\"Upgraded\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"UPGRADE_INTERFACE_VERSION\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"signers_\",\"type\":\"address[]\"}],\"name\":\"addSigners\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"txHash_\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"txNonce_\",\"type\":\"uint256\"}],\"name\":\"checkHash\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token_\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId_\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount_\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"to_\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"network_\",\"type\":\"string\"},{\"internalType\":\"bool\",\"name\":\"isMintable_\",\"type\":\"bool\"}],\"name\":\"depositERC1155\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token_\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount_\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"to_\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"network_\",\"type\":\"string\"},{\"internalType\":\"bool\",\"name\":\"isMintable_\",\"type\":\"bool\"}],\"name\":\"depositERC20\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token_\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId_\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to_\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"network_\",\"type\":\"string\"},{\"internalType\":\"bool\",\"name\":\"isMintable_\",\"type\":\"bool\"}],\"name\":\"depositERC721\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"network_\",\"type\":\"string\"},{\"internalType\":\"address\",\"name\":\"to_\",\"type\":\"address\"}],\"name\":\"depositNative\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token_\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId_\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount_\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to_\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"txHash_\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"txNonce_\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"chainId_\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"tokenURI_\",\"type\":\"string\"},{\"internalType\":\"bool\",\"name\":\"isMintable_\",\"type\":\"bool\"}],\"name\":\"getERC1155SignHash\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token_\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount_\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to_\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"txHash_\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"txNonce_\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"chainId_\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"isMintable_\",\"type\":\"bool\"}],\"name\":\"getERC20SignHash\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token_\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId_\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to_\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"txHash_\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"txNonce_\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"chainId_\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"tokenURI_\",\"type\":\"string\"},{\"internalType\":\"bool\",\"name\":\"isMintable_\",\"type\":\"bool\"}],\"name\":\"getERC721SignHash\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"amount_\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to_\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"txHash_\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"txNonce_\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"chainId_\",\"type\":\"uint256\"}],\"name\":\"getNativeSignHash\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getSigners\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"name\":\"hashes\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"initialOwner_\",\"type\":\"address\"},{\"internalType\":\"address[]\",\"name\":\"signers_\",\"type\":\"address[]\"},{\"internalType\":\"uint256\",\"name\":\"thresholdSignerSignatures_\",\"type\":\"uint256\"}],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"},{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"name\":\"onERC1155BatchReceived\",\"outputs\":[{\"internalType\":\"bytes4\",\"name\":\"\",\"type\":\"bytes4\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"name\":\"onERC1155Received\",\"outputs\":[{\"internalType\":\"bytes4\",\"name\":\"\",\"type\":\"bytes4\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"name\":\"onERC721Received\",\"outputs\":[{\"internalType\":\"bytes4\",\"name\":\"\",\"type\":\"bytes4\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"proxiableUUID\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"signers_\",\"type\":\"address[]\"}],\"name\":\"removeSigners\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"interfaceId\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"thresholdSignerSignatures\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"thresholdSignerSignatures_\",\"type\":\"uint256\"}],\"name\":\"updateThresholdSignatures\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"upgradeToAndCall\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token_\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId_\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount_\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to_\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"txHash_\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"txNonce_\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"tokenURI_\",\"type\":\"string\"},{\"internalType\":\"bool\",\"name\":\"isMintable_\",\"type\":\"bool\"},{\"internalType\":\"bytes[]\",\"name\":\"signatures_\",\"type\":\"bytes[]\"}],\"name\":\"withdrawERC1155\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token_\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount_\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to_\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"txHash_\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"txNonce_\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"isMintable_\",\"type\":\"bool\"},{\"internalType\":\"bytes[]\",\"name\":\"signatures_\",\"type\":\"bytes[]\"}],\"name\":\"withdrawERC20\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token_\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId_\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to_\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"txHash_\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"txNonce_\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"tokenURI_\",\"type\":\"string\"},{\"internalType\":\"bool\",\"name\":\"isMintable_\",\"type\":\"bool\"},{\"internalType\":\"bytes[]\",\"name\":\"signatures_\",\"type\":\"bytes[]\"}],\"name\":\"withdrawERC721\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"amount_\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to_\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"txHash_\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"txNonce_\",\"type\":\"uint256\"},{\"internalType\":\"bytes[]\",\"name\":\"signatures_\",\"type\":\"bytes[]\"}],\"name\":\"withdrawNative\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
 }
 
 // BridgeABI is the input ABI used to generate the binding from.
@@ -335,12 +335,43 @@ func (_Bridge *BridgeCallerSession) GetERC721SignHash(token_ common.Address, tok
 	return _Bridge.Contract.GetERC721SignHash(&_Bridge.CallOpts, token_, tokenId_, to_, txHash_, txNonce_, chainId_, tokenURI_, isMintable_)
 }
 
-// GetOracles is a free data retrieval call binding the contract method 0x40884c52.
+// GetNativeSignHash is a free data retrieval call binding the contract method 0x337e03a9.
 //
-// Solidity: function getOracles() view returns(address[])
-func (_Bridge *BridgeCaller) GetOracles(opts *bind.CallOpts) ([]common.Address, error) {
+// Solidity: function getNativeSignHash(uint256 amount_, address to_, bytes32 txHash_, uint256 txNonce_, uint256 chainId_) pure returns(bytes32)
+func (_Bridge *BridgeCaller) GetNativeSignHash(opts *bind.CallOpts, amount_ *big.Int, to_ common.Address, txHash_ [32]byte, txNonce_ *big.Int, chainId_ *big.Int) ([32]byte, error) {
 	var out []interface{}
-	err := _Bridge.contract.Call(opts, &out, "getOracles")
+	err := _Bridge.contract.Call(opts, &out, "getNativeSignHash", amount_, to_, txHash_, txNonce_, chainId_)
+
+	if err != nil {
+		return *new([32]byte), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new([32]byte)).(*[32]byte)
+
+	return out0, err
+
+}
+
+// GetNativeSignHash is a free data retrieval call binding the contract method 0x337e03a9.
+//
+// Solidity: function getNativeSignHash(uint256 amount_, address to_, bytes32 txHash_, uint256 txNonce_, uint256 chainId_) pure returns(bytes32)
+func (_Bridge *BridgeSession) GetNativeSignHash(amount_ *big.Int, to_ common.Address, txHash_ [32]byte, txNonce_ *big.Int, chainId_ *big.Int) ([32]byte, error) {
+	return _Bridge.Contract.GetNativeSignHash(&_Bridge.CallOpts, amount_, to_, txHash_, txNonce_, chainId_)
+}
+
+// GetNativeSignHash is a free data retrieval call binding the contract method 0x337e03a9.
+//
+// Solidity: function getNativeSignHash(uint256 amount_, address to_, bytes32 txHash_, uint256 txNonce_, uint256 chainId_) pure returns(bytes32)
+func (_Bridge *BridgeCallerSession) GetNativeSignHash(amount_ *big.Int, to_ common.Address, txHash_ [32]byte, txNonce_ *big.Int, chainId_ *big.Int) ([32]byte, error) {
+	return _Bridge.Contract.GetNativeSignHash(&_Bridge.CallOpts, amount_, to_, txHash_, txNonce_, chainId_)
+}
+
+// GetSigners is a free data retrieval call binding the contract method 0x94cf795e.
+//
+// Solidity: function getSigners() view returns(address[])
+func (_Bridge *BridgeCaller) GetSigners(opts *bind.CallOpts) ([]common.Address, error) {
+	var out []interface{}
+	err := _Bridge.contract.Call(opts, &out, "getSigners")
 
 	if err != nil {
 		return *new([]common.Address), err
@@ -352,18 +383,18 @@ func (_Bridge *BridgeCaller) GetOracles(opts *bind.CallOpts) ([]common.Address, 
 
 }
 
-// GetOracles is a free data retrieval call binding the contract method 0x40884c52.
+// GetSigners is a free data retrieval call binding the contract method 0x94cf795e.
 //
-// Solidity: function getOracles() view returns(address[])
-func (_Bridge *BridgeSession) GetOracles() ([]common.Address, error) {
-	return _Bridge.Contract.GetOracles(&_Bridge.CallOpts)
+// Solidity: function getSigners() view returns(address[])
+func (_Bridge *BridgeSession) GetSigners() ([]common.Address, error) {
+	return _Bridge.Contract.GetSigners(&_Bridge.CallOpts)
 }
 
-// GetOracles is a free data retrieval call binding the contract method 0x40884c52.
+// GetSigners is a free data retrieval call binding the contract method 0x94cf795e.
 //
-// Solidity: function getOracles() view returns(address[])
-func (_Bridge *BridgeCallerSession) GetOracles() ([]common.Address, error) {
-	return _Bridge.Contract.GetOracles(&_Bridge.CallOpts)
+// Solidity: function getSigners() view returns(address[])
+func (_Bridge *BridgeCallerSession) GetSigners() ([]common.Address, error) {
+	return _Bridge.Contract.GetSigners(&_Bridge.CallOpts)
 }
 
 // Hashes is a free data retrieval call binding the contract method 0xd658d2e9.
@@ -490,12 +521,12 @@ func (_Bridge *BridgeCallerSession) SupportsInterface(interfaceId [4]byte) (bool
 	return _Bridge.Contract.SupportsInterface(&_Bridge.CallOpts, interfaceId)
 }
 
-// ThresholdOracleSignatures is a free data retrieval call binding the contract method 0x1d28dc86.
+// ThresholdSignerSignatures is a free data retrieval call binding the contract method 0x6277bcbc.
 //
-// Solidity: function thresholdOracleSignatures() view returns(uint256)
-func (_Bridge *BridgeCaller) ThresholdOracleSignatures(opts *bind.CallOpts) (*big.Int, error) {
+// Solidity: function thresholdSignerSignatures() view returns(uint256)
+func (_Bridge *BridgeCaller) ThresholdSignerSignatures(opts *bind.CallOpts) (*big.Int, error) {
 	var out []interface{}
-	err := _Bridge.contract.Call(opts, &out, "thresholdOracleSignatures")
+	err := _Bridge.contract.Call(opts, &out, "thresholdSignerSignatures")
 
 	if err != nil {
 		return *new(*big.Int), err
@@ -507,39 +538,39 @@ func (_Bridge *BridgeCaller) ThresholdOracleSignatures(opts *bind.CallOpts) (*bi
 
 }
 
-// ThresholdOracleSignatures is a free data retrieval call binding the contract method 0x1d28dc86.
+// ThresholdSignerSignatures is a free data retrieval call binding the contract method 0x6277bcbc.
 //
-// Solidity: function thresholdOracleSignatures() view returns(uint256)
-func (_Bridge *BridgeSession) ThresholdOracleSignatures() (*big.Int, error) {
-	return _Bridge.Contract.ThresholdOracleSignatures(&_Bridge.CallOpts)
+// Solidity: function thresholdSignerSignatures() view returns(uint256)
+func (_Bridge *BridgeSession) ThresholdSignerSignatures() (*big.Int, error) {
+	return _Bridge.Contract.ThresholdSignerSignatures(&_Bridge.CallOpts)
 }
 
-// ThresholdOracleSignatures is a free data retrieval call binding the contract method 0x1d28dc86.
+// ThresholdSignerSignatures is a free data retrieval call binding the contract method 0x6277bcbc.
 //
-// Solidity: function thresholdOracleSignatures() view returns(uint256)
-func (_Bridge *BridgeCallerSession) ThresholdOracleSignatures() (*big.Int, error) {
-	return _Bridge.Contract.ThresholdOracleSignatures(&_Bridge.CallOpts)
+// Solidity: function thresholdSignerSignatures() view returns(uint256)
+func (_Bridge *BridgeCallerSession) ThresholdSignerSignatures() (*big.Int, error) {
+	return _Bridge.Contract.ThresholdSignerSignatures(&_Bridge.CallOpts)
 }
 
-// AddOracles is a paid mutator transaction binding the contract method 0x205b931e.
+// AddSigners is a paid mutator transaction binding the contract method 0xe8906a2d.
 //
-// Solidity: function addOracles(address[] oracles_) returns()
-func (_Bridge *BridgeTransactor) AddOracles(opts *bind.TransactOpts, oracles_ []common.Address) (*types.Transaction, error) {
-	return _Bridge.contract.Transact(opts, "addOracles", oracles_)
+// Solidity: function addSigners(address[] signers_) returns()
+func (_Bridge *BridgeTransactor) AddSigners(opts *bind.TransactOpts, signers_ []common.Address) (*types.Transaction, error) {
+	return _Bridge.contract.Transact(opts, "addSigners", signers_)
 }
 
-// AddOracles is a paid mutator transaction binding the contract method 0x205b931e.
+// AddSigners is a paid mutator transaction binding the contract method 0xe8906a2d.
 //
-// Solidity: function addOracles(address[] oracles_) returns()
-func (_Bridge *BridgeSession) AddOracles(oracles_ []common.Address) (*types.Transaction, error) {
-	return _Bridge.Contract.AddOracles(&_Bridge.TransactOpts, oracles_)
+// Solidity: function addSigners(address[] signers_) returns()
+func (_Bridge *BridgeSession) AddSigners(signers_ []common.Address) (*types.Transaction, error) {
+	return _Bridge.Contract.AddSigners(&_Bridge.TransactOpts, signers_)
 }
 
-// AddOracles is a paid mutator transaction binding the contract method 0x205b931e.
+// AddSigners is a paid mutator transaction binding the contract method 0xe8906a2d.
 //
-// Solidity: function addOracles(address[] oracles_) returns()
-func (_Bridge *BridgeTransactorSession) AddOracles(oracles_ []common.Address) (*types.Transaction, error) {
-	return _Bridge.Contract.AddOracles(&_Bridge.TransactOpts, oracles_)
+// Solidity: function addSigners(address[] signers_) returns()
+func (_Bridge *BridgeTransactorSession) AddSigners(signers_ []common.Address) (*types.Transaction, error) {
+	return _Bridge.Contract.AddSigners(&_Bridge.TransactOpts, signers_)
 }
 
 // DepositERC1155 is a paid mutator transaction binding the contract method 0x1270ce5a.
@@ -605,25 +636,46 @@ func (_Bridge *BridgeTransactorSession) DepositERC721(token_ common.Address, tok
 	return _Bridge.Contract.DepositERC721(&_Bridge.TransactOpts, token_, tokenId_, to_, network_, isMintable_)
 }
 
-// Initialize is a paid mutator transaction binding the contract method 0x3ede50c6.
+// DepositNative is a paid mutator transaction binding the contract method 0x5abf1aae.
 //
-// Solidity: function initialize(address initialOwner_, address[] oracles_, uint256 thresholdOracleSignatures_) returns()
-func (_Bridge *BridgeTransactor) Initialize(opts *bind.TransactOpts, initialOwner_ common.Address, oracles_ []common.Address, thresholdOracleSignatures_ *big.Int) (*types.Transaction, error) {
-	return _Bridge.contract.Transact(opts, "initialize", initialOwner_, oracles_, thresholdOracleSignatures_)
+// Solidity: function depositNative(string network_, address to_) payable returns()
+func (_Bridge *BridgeTransactor) DepositNative(opts *bind.TransactOpts, network_ string, to_ common.Address) (*types.Transaction, error) {
+	return _Bridge.contract.Transact(opts, "depositNative", network_, to_)
+}
+
+// DepositNative is a paid mutator transaction binding the contract method 0x5abf1aae.
+//
+// Solidity: function depositNative(string network_, address to_) payable returns()
+func (_Bridge *BridgeSession) DepositNative(network_ string, to_ common.Address) (*types.Transaction, error) {
+	return _Bridge.Contract.DepositNative(&_Bridge.TransactOpts, network_, to_)
+}
+
+// DepositNative is a paid mutator transaction binding the contract method 0x5abf1aae.
+//
+// Solidity: function depositNative(string network_, address to_) payable returns()
+func (_Bridge *BridgeTransactorSession) DepositNative(network_ string, to_ common.Address) (*types.Transaction, error) {
+	return _Bridge.Contract.DepositNative(&_Bridge.TransactOpts, network_, to_)
 }
 
 // Initialize is a paid mutator transaction binding the contract method 0x3ede50c6.
 //
-// Solidity: function initialize(address initialOwner_, address[] oracles_, uint256 thresholdOracleSignatures_) returns()
-func (_Bridge *BridgeSession) Initialize(initialOwner_ common.Address, oracles_ []common.Address, thresholdOracleSignatures_ *big.Int) (*types.Transaction, error) {
-	return _Bridge.Contract.Initialize(&_Bridge.TransactOpts, initialOwner_, oracles_, thresholdOracleSignatures_)
+// Solidity: function initialize(address initialOwner_, address[] signers_, uint256 thresholdSignerSignatures_) returns()
+func (_Bridge *BridgeTransactor) Initialize(opts *bind.TransactOpts, initialOwner_ common.Address, signers_ []common.Address, thresholdSignerSignatures_ *big.Int) (*types.Transaction, error) {
+	return _Bridge.contract.Transact(opts, "initialize", initialOwner_, signers_, thresholdSignerSignatures_)
 }
 
 // Initialize is a paid mutator transaction binding the contract method 0x3ede50c6.
 //
-// Solidity: function initialize(address initialOwner_, address[] oracles_, uint256 thresholdOracleSignatures_) returns()
-func (_Bridge *BridgeTransactorSession) Initialize(initialOwner_ common.Address, oracles_ []common.Address, thresholdOracleSignatures_ *big.Int) (*types.Transaction, error) {
-	return _Bridge.Contract.Initialize(&_Bridge.TransactOpts, initialOwner_, oracles_, thresholdOracleSignatures_)
+// Solidity: function initialize(address initialOwner_, address[] signers_, uint256 thresholdSignerSignatures_) returns()
+func (_Bridge *BridgeSession) Initialize(initialOwner_ common.Address, signers_ []common.Address, thresholdSignerSignatures_ *big.Int) (*types.Transaction, error) {
+	return _Bridge.Contract.Initialize(&_Bridge.TransactOpts, initialOwner_, signers_, thresholdSignerSignatures_)
+}
+
+// Initialize is a paid mutator transaction binding the contract method 0x3ede50c6.
+//
+// Solidity: function initialize(address initialOwner_, address[] signers_, uint256 thresholdSignerSignatures_) returns()
+func (_Bridge *BridgeTransactorSession) Initialize(initialOwner_ common.Address, signers_ []common.Address, thresholdSignerSignatures_ *big.Int) (*types.Transaction, error) {
+	return _Bridge.Contract.Initialize(&_Bridge.TransactOpts, initialOwner_, signers_, thresholdSignerSignatures_)
 }
 
 // OnERC1155BatchReceived is a paid mutator transaction binding the contract method 0xbc197c81.
@@ -689,25 +741,25 @@ func (_Bridge *BridgeTransactorSession) OnERC721Received(arg0 common.Address, ar
 	return _Bridge.Contract.OnERC721Received(&_Bridge.TransactOpts, arg0, arg1, arg2, arg3)
 }
 
-// RemoveOracles is a paid mutator transaction binding the contract method 0x45644fd6.
+// RemoveSigners is a paid mutator transaction binding the contract method 0x8d361e43.
 //
-// Solidity: function removeOracles(address[] oracles_) returns()
-func (_Bridge *BridgeTransactor) RemoveOracles(opts *bind.TransactOpts, oracles_ []common.Address) (*types.Transaction, error) {
-	return _Bridge.contract.Transact(opts, "removeOracles", oracles_)
+// Solidity: function removeSigners(address[] signers_) returns()
+func (_Bridge *BridgeTransactor) RemoveSigners(opts *bind.TransactOpts, signers_ []common.Address) (*types.Transaction, error) {
+	return _Bridge.contract.Transact(opts, "removeSigners", signers_)
 }
 
-// RemoveOracles is a paid mutator transaction binding the contract method 0x45644fd6.
+// RemoveSigners is a paid mutator transaction binding the contract method 0x8d361e43.
 //
-// Solidity: function removeOracles(address[] oracles_) returns()
-func (_Bridge *BridgeSession) RemoveOracles(oracles_ []common.Address) (*types.Transaction, error) {
-	return _Bridge.Contract.RemoveOracles(&_Bridge.TransactOpts, oracles_)
+// Solidity: function removeSigners(address[] signers_) returns()
+func (_Bridge *BridgeSession) RemoveSigners(signers_ []common.Address) (*types.Transaction, error) {
+	return _Bridge.Contract.RemoveSigners(&_Bridge.TransactOpts, signers_)
 }
 
-// RemoveOracles is a paid mutator transaction binding the contract method 0x45644fd6.
+// RemoveSigners is a paid mutator transaction binding the contract method 0x8d361e43.
 //
-// Solidity: function removeOracles(address[] oracles_) returns()
-func (_Bridge *BridgeTransactorSession) RemoveOracles(oracles_ []common.Address) (*types.Transaction, error) {
-	return _Bridge.Contract.RemoveOracles(&_Bridge.TransactOpts, oracles_)
+// Solidity: function removeSigners(address[] signers_) returns()
+func (_Bridge *BridgeTransactorSession) RemoveSigners(signers_ []common.Address) (*types.Transaction, error) {
+	return _Bridge.Contract.RemoveSigners(&_Bridge.TransactOpts, signers_)
 }
 
 // RenounceOwnership is a paid mutator transaction binding the contract method 0x715018a6.
@@ -754,23 +806,23 @@ func (_Bridge *BridgeTransactorSession) TransferOwnership(newOwner common.Addres
 
 // UpdateThresholdSignatures is a paid mutator transaction binding the contract method 0x60dbac34.
 //
-// Solidity: function updateThresholdSignatures(uint256 thresholdOracleSignatures_) returns()
-func (_Bridge *BridgeTransactor) UpdateThresholdSignatures(opts *bind.TransactOpts, thresholdOracleSignatures_ *big.Int) (*types.Transaction, error) {
-	return _Bridge.contract.Transact(opts, "updateThresholdSignatures", thresholdOracleSignatures_)
+// Solidity: function updateThresholdSignatures(uint256 thresholdSignerSignatures_) returns()
+func (_Bridge *BridgeTransactor) UpdateThresholdSignatures(opts *bind.TransactOpts, thresholdSignerSignatures_ *big.Int) (*types.Transaction, error) {
+	return _Bridge.contract.Transact(opts, "updateThresholdSignatures", thresholdSignerSignatures_)
 }
 
 // UpdateThresholdSignatures is a paid mutator transaction binding the contract method 0x60dbac34.
 //
-// Solidity: function updateThresholdSignatures(uint256 thresholdOracleSignatures_) returns()
-func (_Bridge *BridgeSession) UpdateThresholdSignatures(thresholdOracleSignatures_ *big.Int) (*types.Transaction, error) {
-	return _Bridge.Contract.UpdateThresholdSignatures(&_Bridge.TransactOpts, thresholdOracleSignatures_)
+// Solidity: function updateThresholdSignatures(uint256 thresholdSignerSignatures_) returns()
+func (_Bridge *BridgeSession) UpdateThresholdSignatures(thresholdSignerSignatures_ *big.Int) (*types.Transaction, error) {
+	return _Bridge.Contract.UpdateThresholdSignatures(&_Bridge.TransactOpts, thresholdSignerSignatures_)
 }
 
 // UpdateThresholdSignatures is a paid mutator transaction binding the contract method 0x60dbac34.
 //
-// Solidity: function updateThresholdSignatures(uint256 thresholdOracleSignatures_) returns()
-func (_Bridge *BridgeTransactorSession) UpdateThresholdSignatures(thresholdOracleSignatures_ *big.Int) (*types.Transaction, error) {
-	return _Bridge.Contract.UpdateThresholdSignatures(&_Bridge.TransactOpts, thresholdOracleSignatures_)
+// Solidity: function updateThresholdSignatures(uint256 thresholdSignerSignatures_) returns()
+func (_Bridge *BridgeTransactorSession) UpdateThresholdSignatures(thresholdSignerSignatures_ *big.Int) (*types.Transaction, error) {
+	return _Bridge.Contract.UpdateThresholdSignatures(&_Bridge.TransactOpts, thresholdSignerSignatures_)
 }
 
 // UpgradeToAndCall is a paid mutator transaction binding the contract method 0x4f1ef286.
@@ -855,6 +907,27 @@ func (_Bridge *BridgeSession) WithdrawERC721(token_ common.Address, tokenId_ *bi
 // Solidity: function withdrawERC721(address token_, uint256 tokenId_, address to_, bytes32 txHash_, uint256 txNonce_, string tokenURI_, bool isMintable_, bytes[] signatures_) returns()
 func (_Bridge *BridgeTransactorSession) WithdrawERC721(token_ common.Address, tokenId_ *big.Int, to_ common.Address, txHash_ [32]byte, txNonce_ *big.Int, tokenURI_ string, isMintable_ bool, signatures_ [][]byte) (*types.Transaction, error) {
 	return _Bridge.Contract.WithdrawERC721(&_Bridge.TransactOpts, token_, tokenId_, to_, txHash_, txNonce_, tokenURI_, isMintable_, signatures_)
+}
+
+// WithdrawNative is a paid mutator transaction binding the contract method 0x1c3d9c87.
+//
+// Solidity: function withdrawNative(uint256 amount_, address to_, bytes32 txHash_, uint256 txNonce_, bytes[] signatures_) returns()
+func (_Bridge *BridgeTransactor) WithdrawNative(opts *bind.TransactOpts, amount_ *big.Int, to_ common.Address, txHash_ [32]byte, txNonce_ *big.Int, signatures_ [][]byte) (*types.Transaction, error) {
+	return _Bridge.contract.Transact(opts, "withdrawNative", amount_, to_, txHash_, txNonce_, signatures_)
+}
+
+// WithdrawNative is a paid mutator transaction binding the contract method 0x1c3d9c87.
+//
+// Solidity: function withdrawNative(uint256 amount_, address to_, bytes32 txHash_, uint256 txNonce_, bytes[] signatures_) returns()
+func (_Bridge *BridgeSession) WithdrawNative(amount_ *big.Int, to_ common.Address, txHash_ [32]byte, txNonce_ *big.Int, signatures_ [][]byte) (*types.Transaction, error) {
+	return _Bridge.Contract.WithdrawNative(&_Bridge.TransactOpts, amount_, to_, txHash_, txNonce_, signatures_)
+}
+
+// WithdrawNative is a paid mutator transaction binding the contract method 0x1c3d9c87.
+//
+// Solidity: function withdrawNative(uint256 amount_, address to_, bytes32 txHash_, uint256 txNonce_, bytes[] signatures_) returns()
+func (_Bridge *BridgeTransactorSession) WithdrawNative(amount_ *big.Int, to_ common.Address, txHash_ [32]byte, txNonce_ *big.Int, signatures_ [][]byte) (*types.Transaction, error) {
+	return _Bridge.Contract.WithdrawNative(&_Bridge.TransactOpts, amount_, to_, txHash_, txNonce_, signatures_)
 }
 
 // BridgeDepositedERC1155Iterator is returned from FilterDepositedERC1155 and is used to iterate over the raw logs and unpacked data for DepositedERC1155 events raised by the Bridge contract.
@@ -1286,6 +1359,142 @@ func (_Bridge *BridgeFilterer) WatchDepositedERC721(opts *bind.WatchOpts, sink c
 func (_Bridge *BridgeFilterer) ParseDepositedERC721(log types.Log) (*BridgeDepositedERC721, error) {
 	event := new(BridgeDepositedERC721)
 	if err := _Bridge.contract.UnpackLog(event, "DepositedERC721", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// BridgeDepositedNativeIterator is returned from FilterDepositedNative and is used to iterate over the raw logs and unpacked data for DepositedNative events raised by the Bridge contract.
+type BridgeDepositedNativeIterator struct {
+	Event *BridgeDepositedNative // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *BridgeDepositedNativeIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(BridgeDepositedNative)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(BridgeDepositedNative)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *BridgeDepositedNativeIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *BridgeDepositedNativeIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// BridgeDepositedNative represents a DepositedNative event raised by the Bridge contract.
+type BridgeDepositedNative struct {
+	Network string
+	To      common.Address
+	Amount  *big.Int
+	Raw     types.Log // Blockchain specific contextual infos
+}
+
+// FilterDepositedNative is a free log retrieval operation binding the contract event 0xccc8938b99f3896c5d813e5ba81af507014c215dfabc15e91a87d56252c04aa5.
+//
+// Solidity: event DepositedNative(string network, address to, uint256 amount)
+func (_Bridge *BridgeFilterer) FilterDepositedNative(opts *bind.FilterOpts) (*BridgeDepositedNativeIterator, error) {
+
+	logs, sub, err := _Bridge.contract.FilterLogs(opts, "DepositedNative")
+	if err != nil {
+		return nil, err
+	}
+	return &BridgeDepositedNativeIterator{contract: _Bridge.contract, event: "DepositedNative", logs: logs, sub: sub}, nil
+}
+
+// WatchDepositedNative is a free log subscription operation binding the contract event 0xccc8938b99f3896c5d813e5ba81af507014c215dfabc15e91a87d56252c04aa5.
+//
+// Solidity: event DepositedNative(string network, address to, uint256 amount)
+func (_Bridge *BridgeFilterer) WatchDepositedNative(opts *bind.WatchOpts, sink chan<- *BridgeDepositedNative) (event.Subscription, error) {
+
+	logs, sub, err := _Bridge.contract.WatchLogs(opts, "DepositedNative")
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(BridgeDepositedNative)
+				if err := _Bridge.contract.UnpackLog(event, "DepositedNative", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseDepositedNative is a log parse operation binding the contract event 0xccc8938b99f3896c5d813e5ba81af507014c215dfabc15e91a87d56252c04aa5.
+//
+// Solidity: event DepositedNative(string network, address to, uint256 amount)
+func (_Bridge *BridgeFilterer) ParseDepositedNative(log types.Log) (*BridgeDepositedNative, error) {
+	event := new(BridgeDepositedNative)
+	if err := _Bridge.contract.UnpackLog(event, "DepositedNative", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
