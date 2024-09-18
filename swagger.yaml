@@ -438,7 +438,7 @@ paths:
         in: query
         name: filter[chain_type]
         type: array
-      - description: Include tokens in the response
+      - description: 'Include tokens in the response. Items Value: [`true`, `false`]'
         in: query
         name: include_tokens
         type: boolean
@@ -465,7 +465,7 @@ paths:
       operationId: getTokens
       parameters:
       - description: 'Include chains in the response. Items Value: [`true`, `false`]'
-        in: path
+        in: query
         name: include_chains
         type: boolean
       - description: 'Filter by chain type. Items Value: [`''chain''`]'
