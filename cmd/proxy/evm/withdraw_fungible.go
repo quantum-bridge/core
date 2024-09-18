@@ -16,8 +16,8 @@ func (p *proxyEVM) WithdrawFungible(tokenChain datashared.TokenChain, from, to, 
 		return nil, errors.Wrapf(err, "failed to check hash %s", txHash)
 	}
 
-	// Get the threshold of the bridge for the oracle signatures.
-	threshold, err := p.getThresholdOracleSignatures()
+	// Get the threshold of the bridge for the signer signatures.
+	threshold, err := p.getThresholdSignerSignatures()
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get threshold")
 	}

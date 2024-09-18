@@ -204,10 +204,10 @@ func (p *proxyEVM) getSignatureNumber(transaction *types.Transaction) (int64, er
 	return 0, errors.New("failed to get signature number")
 }
 
-// getThresholdOracleSignatures returns the threshold of the bridge.
-func (p *proxyEVM) getThresholdOracleSignatures() (uint64, error) {
-	// Get the threshold of the bridge for the oracle signatures.
-	threshold, err := p.bridge.ThresholdOracleSignatures(&bind.CallOpts{})
+// getThresholdSignerSignatures returns the threshold of the bridge.
+func (p *proxyEVM) getThresholdSignerSignatures() (uint64, error) {
+	// Get the threshold of the bridge for the signer signatures.
+	threshold, err := p.bridge.ThresholdSignerSignatures(&bind.CallOpts{})
 	if err != nil {
 		return 0, errors.Wrap(err, "failed to get threshold")
 	}
