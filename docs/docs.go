@@ -135,7 +135,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Chain ID",
-                        "name": "chain",
+                        "name": "chain_id",
                         "in": "query",
                         "required": true
                     },
