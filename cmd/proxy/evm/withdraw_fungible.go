@@ -34,6 +34,8 @@ func (p *proxyEVM) WithdrawFungible(tokenChain datashared.TokenChain, from, to, 
 
 	// Switch on the token type to create the transaction object for the withdrawal of the token to be transferred to the destination chain.
 	switch tokenChain.TokenType {
+	case TokenNative:
+		tx, err = p.withdrawNative(fromAddress, to, txHash, amount)
 	case TokenERC20:
 		tx, err = p.withdrawERC20(tokenChain, fromAddress, txHash, to, amount)
 	case TokenERC1155:
@@ -66,6 +68,42 @@ func (p *proxyEVM) WithdrawFungible(tokenChain datashared.TokenChain, from, to, 
 
 	// Encode the transaction to be sent to the blockchain.
 	return encodeTransaction(tx, fromAddress, p.chainID, tokenChain.ChainID, &confirmed), nil
+}
+
+// withdrawNative withdraws the given amount of native token to the given address.
+func (p *proxyEVM) withdrawNative(fromAddress common.Address, to, txHash string, amount *big.Int) (*types.Transaction, error) {
+	// Convert the amount to big.Int type.
+	amountBigInt := new(big.Int).Set(amount)
+
+	// Convert the destination address to common.Address type.
+	toAddress := common.HexToAddress(to)
+
+	// Convert the transaction hash to common.Hash type.
+	transactionHash := common.HexToHash(txHash)
+
+	log := logs.NativeLog{
+		Amount:     amountBigInt,
+		To:         to,
+		TxHash:     transactionHash,
+		EventIndex: defaultEventIndex,
+		ChainID:    p.chainID,
+	}
+
+	// Sign the log object to get the signature.
+	signature, err := p.signer.Sign(log)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to sign log")
+	}
+
+	// Create the transaction object for the withdrawal of the native token to be transferred to the destination chain.
+	return p.bridge.WithdrawNative(
+		buildTransactionOptions(fromAddress, nil),
+		amountBigInt,
+		toAddress,
+		transactionHash,
+		big.NewInt(int64(defaultEventIndex)),
+		[][]byte{signature},
+	)
 }
 
 // withdrawERC20 withdraws the given amount of ERC20 token to the given address.

@@ -13,6 +13,8 @@ import (
 )
 
 const (
+	// TokenNative is the name of the native token type.
+	TokenNative = "native"
 	// TokenERC20 is the name of the ERC20 token type.
 	TokenERC20 = "erc20"
 	// TokenERC721 is the name of the ERC721 token type.

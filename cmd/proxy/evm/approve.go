@@ -23,6 +23,8 @@ func (p *proxyEVM) Approve(tokenChain datashared.TokenChain, from string) (inter
 
 	// Switch on the token type to create the transaction object for the approval of the token to be transferred by the bridge contract.
 	switch tokenChain.TokenType {
+	case TokenNative:
+		return nil, nil
 	case TokenERC20:
 		tx, err = p.approveERC20(common.HexToAddress(tokenChain.TokenAddress), fromAddress)
 	case TokenERC721:

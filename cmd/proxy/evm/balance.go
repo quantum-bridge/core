@@ -1,6 +1,7 @@
 package evm
 
 import (
+	"context"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/pkg/errors"
@@ -20,6 +21,8 @@ func (p *proxyEVM) BridgeBalance(tokenChain datashared.TokenChain, tokenId *stri
 func (p *proxyEVM) Balance(tokenChain datashared.TokenChain, address string, tokenId *string) (*big.Int, error) {
 	// Switch on the token type to get the balance of the token for the given address.
 	switch tokenChain.TokenType {
+	case TokenNative:
+		return p.balanceNative(address)
 	case TokenERC20:
 		return p.balanceERC20(tokenChain, address)
 	case TokenERC721:
@@ -29,6 +32,17 @@ func (p *proxyEVM) Balance(tokenChain datashared.TokenChain, address string, tok
 	default:
 		return &big.Int{}, errors.New("unsupported type of token")
 	}
+}
+
+// balanceNative returns the balance of the native token for the given address.
+func (p *proxyEVM) balanceNative(address string) (*big.Int, error) {
+	// Get the balance of the given address.
+	balance, err := p.client.BalanceAt(context.Background(), common.HexToAddress(address), nil)
+	if err != nil {
+		return &big.Int{}, errors.Wrapf(err, "failed to get balance for address %s", address)
+	}
+
+	return balance, nil
 }
 
 // balanceERC20 returns the balance of the given ERC20 token for the given address.

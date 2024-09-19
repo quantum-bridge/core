@@ -20,6 +20,8 @@ func (p *proxyEVM) CheckFungible(txHash string, tokenChain datashared.TokenChain
 
 	// Switch on the token type to check the status of the given fungible token transfer.
 	switch tokenChain.TokenType {
+	case TokenNative:
+		return p.checkNative(to)
 	case TokenERC20:
 		return p.checkFungibleERC20(to, tokenChain)
 	case TokenERC1155:
@@ -27,6 +29,30 @@ func (p *proxyEVM) CheckFungible(txHash string, tokenChain datashared.TokenChain
 	default:
 		return &datashared.FungibleLock{}, errors.New("unsupported type of token")
 	}
+}
+
+// checkNative checks the status of the given native token transfer.
+func (p *proxyEVM) checkNative(to *types.Receipt) (*datashared.FungibleLock, error) {
+	// Create a new BridgeDepositedNative log object.
+	log := bridge.BridgeDepositedNative{}
+
+	// Get the bridge event log for the given event index.
+	err := p.getBridgeEvent(&log, depositNativeEvent, to)
+	if err != nil {
+		return &datashared.FungibleLock{}, err
+	}
+
+	// Check if the amount is nil and return an error if it is.
+	if log.Amount == nil {
+		return &datashared.FungibleLock{}, errors.New("amount is nil")
+	}
+
+	// Return the fungible lock object.
+	return &datashared.FungibleLock{
+		To:      log.To.Hex(),
+		Amount:  log.Amount,
+		Network: log.Network,
+	}, nil
 }
 
 // checkFungibleERC20 checks the status of the given ERC20 token transfer.

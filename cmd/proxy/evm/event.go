@@ -12,6 +12,8 @@ import (
 )
 
 const (
+	// defaultEventIndex is the default event index.
+	depositNativeEvent = "DepositedNative"
 	// depositERC20Event is the name of the ERC20 deposit event.
 	depositERC20Event = "DepositedERC20"
 	// depositERC721Event is the name of the ERC721 deposit event.

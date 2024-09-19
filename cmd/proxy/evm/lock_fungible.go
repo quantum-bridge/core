@@ -18,6 +18,8 @@ func (p *proxyEVM) LockFungible(tokenChain datashared.TokenChain, from, to, netw
 
 	// Switch on the token type to create the transaction object for the lock of the token to be transferred to the destination chain.
 	switch tokenChain.TokenType {
+	case TokenNative:
+		tx, err = p.lockNative(fromAddress, to, network, amount)
 	case TokenERC20:
 		tx, err = p.lockERC20(tokenChain, fromAddress, to, network, amount)
 	case TokenERC1155:
@@ -38,6 +40,30 @@ func (p *proxyEVM) LockFungible(tokenChain datashared.TokenChain, from, to, netw
 	encodedTx := encodeTransaction(tx, fromAddress, p.chainID, network, nil)
 
 	return encodedTx, nil
+}
+
+// lockNative locks the native token to be transferred to the destination chain.
+func (p *proxyEVM) lockNative(fromAddress common.Address, to, network, amount string) (*types.Transaction, error) {
+	// Convert the amount to big.Int type.
+	amountBigInt, ok := new(big.Int).SetString(amount, 10)
+	if !ok {
+		return nil, errors.New("failed to convert amount to big.Int")
+	}
+
+	// Convert the destination address to common.Address type.
+	toAddress := common.HexToAddress(to)
+
+	// Create the transaction object for the lock of the native token to be transferred to the destination chain.
+	tx, err := p.bridge.DepositNative(
+		buildTransactionOptions(fromAddress, amountBigInt),
+		network,
+		toAddress,
+	)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to deposit native token")
+	}
+
+	return tx, nil
 }
 
 // lockERC20 locks the given ERC20 token to be transferred to the destination chain.
