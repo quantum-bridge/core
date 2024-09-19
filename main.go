@@ -10,7 +10,7 @@ import (
 //
 // @host localhost:8000
 // @schemes http
-// @BasePath /
+// @BasePath /v1
 func main() {
 	bridge.Run()
 }
