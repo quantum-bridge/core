@@ -1003,7 +1003,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "localhost:8000",
-	BasePath:         "/",
+	BasePath:         "/v1",
 	Schemes:          []string{"http"},
 	Title:            "Core bridge API",
 	Description:      "Core bridge API is a service that responsible for the communication between blockchains.",
