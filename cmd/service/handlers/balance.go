@@ -16,7 +16,7 @@ import (
 // @Produce json
 // @Param token_id path string true "Token ID"
 // @Param address query string true "Address of the account"
-// @Param chain query string true "Chain ID"
+// @Param chain_id query string true "Chain ID"
 // @Param nft query string false "NFT ID"
 // @Success 200 {object} shared.BalanceResponse "Successful operation"
 // @Failure 400 "Bad request"
