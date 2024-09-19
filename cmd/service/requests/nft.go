@@ -31,7 +31,7 @@ func NewGetNFTRequest(r *http.Request) (GetNFTDTO, error) {
 	// Get 'chain_id' query parameter (required).
 	chain := params.Get("chain_id")
 	if chain == "" {
-		return GetNFTDTO{}, errors.New("chain is required")
+		return GetNFTDTO{}, errors.New("chain_id is required")
 	}
 	request.ChainID = chain
 

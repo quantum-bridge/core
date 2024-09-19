@@ -42,7 +42,7 @@ func NewGetBalanceRequest(r *http.Request) (GetBalanceDTO, error) {
 	// Get the chain ID from params.
 	chain := params.Get("chain_id")
 	if chain == "" {
-		return request, errors.New("chain is required")
+		return request, errors.New("chain_id is required")
 	}
 	request.ChainID = chain
 
