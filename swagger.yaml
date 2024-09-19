@@ -505,7 +505,7 @@ paths:
         type: string
       - description: Chain ID
         in: query
-        name: chain
+        name: chain_id
         required: true
         type: string
       - description: NFT ID
