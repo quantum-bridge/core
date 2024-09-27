@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/quantum-bridge/core/cmd/bridge"
+	"os"
 )
 
 // @title Core bridge API
@@ -12,5 +13,5 @@ import (
 // @schemes http
 // @BasePath /v1
 func main() {
-	bridge.Run()
+	bridge.Run(os.Args)
 }
