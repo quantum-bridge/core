@@ -5,6 +5,7 @@ import (
 	datashared "github.com/quantum-bridge/core/cmd/data/shared"
 	"github.com/quantum-bridge/core/cmd/ipfs"
 	"github.com/quantum-bridge/core/cmd/proxy/evm/signature"
+	"github.com/quantum-bridge/core/pkg/squirrelizer"
 	"go.uber.org/zap"
 	"net"
 	"net/http"
@@ -14,6 +15,7 @@ import (
 type service struct {
 	logger      *zap.SugaredLogger
 	listener    net.Listener
+	db          *squirrelizer.DB
 	tokens      []datashared.Token
 	chains      []datashared.Chain
 	tokenChains []datashared.TokenChain
@@ -33,6 +35,7 @@ func newService(cfg config.Config, logger *zap.SugaredLogger) *service {
 	return &service{
 		logger:      logger,
 		listener:    cfg.Listener(),
+		db:          cfg.DB(),
 		tokens:      cfg.Token(),
 		chains:      cfg.Chains(),
 		tokenChains: cfg.TokenChains(),

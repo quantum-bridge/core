@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	pgrepositories "github.com/quantum-bridge/core/cmd/data/postgresql/repositories"
 	"github.com/quantum-bridge/core/cmd/data/repositories"
 	"github.com/quantum-bridge/core/cmd/proxy"
 	"go.uber.org/zap"
@@ -22,6 +23,8 @@ const (
 	tokenChainsCtx
 	// proxyCtx is the context key for the proxy.
 	proxyCtx
+	// transactionsHistoryCtx is the context key for the database.
+	transactionsHistoryCtx
 )
 
 // LogContextMiddleware is a middleware that adds the logger to the context.
@@ -59,6 +62,13 @@ func ProxyContextMiddleware(proxy proxy.Proxy) func(ctx context.Context) context
 	}
 }
 
+// TransactionsHistoryContextMiddleware is a middleware that adds the database to the context.
+func TransactionsHistoryContextMiddleware(transactionsHistoryQuery pgrepositories.TransactionsHistoryRepository) func(ctx context.Context) context.Context {
+	return func(ctx context.Context) context.Context {
+		return context.WithValue(ctx, transactionsHistoryCtx, transactionsHistoryQuery)
+	}
+}
+
 // Log returns the logger from the RAM cache.
 func Log(ctx context.Context) *zap.SugaredLogger {
 	return ctx.Value(loggerCtx).(*zap.SugaredLogger)
@@ -82,4 +92,9 @@ func TokenChains(ctx context.Context) repositories.TokenChainsRepository {
 // Proxy returns the proxy from the RAM cache. Proxy is used to make requests to the blockchain.
 func Proxy(ctx context.Context) proxy.Proxy {
 	return ctx.Value(proxyCtx).(proxy.Proxy)
+}
+
+// TransactionsHistoryQuery returns the database client that are being used in the bridge.
+func TransactionsHistoryQuery(ctx context.Context) pgrepositories.TransactionsHistoryRepository {
+	return ctx.Value(transactionsHistoryCtx).(pgrepositories.TransactionsHistoryRepository).New()
 }

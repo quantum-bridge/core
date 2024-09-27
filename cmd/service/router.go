@@ -5,6 +5,7 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/cors"
+	pgrepositories "github.com/quantum-bridge/core/cmd/data/postgresql/repositories"
 	"github.com/quantum-bridge/core/cmd/data/repositories"
 	"github.com/quantum-bridge/core/cmd/proxy"
 	"github.com/quantum-bridge/core/cmd/service/handlers"
@@ -32,6 +33,7 @@ func (s *service) router() chi.Router {
 			handlers.ChainsContextMiddleware(repositories.NewChains(s.chains)),
 			handlers.TokenChainsContextMiddleware(repositories.NewTokenChains(s.tokenChains)),
 			handlers.ProxyContextMiddleware(proxies),
+			handlers.TransactionsHistoryContextMiddleware(pgrepositories.NewTransactionsHistory(s.db)),
 		),
 		cors.Handler(cors.Options{
 			AllowedOrigins:   []string{"*"},
