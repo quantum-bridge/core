@@ -46,7 +46,7 @@ func (db *DB) ExecuteTransactionWithOptions(opts *sql.TxOptions, fn TransactionF
 	// Set the Query to a new query handler with the transaction.
 	db.Query = newQueryHandler(tx)
 
-	// Ensure the transaction is rolled back if any error occurs.
+	// Ensure the transaction is rolled back if any error occurs. A
 	defer tx.Rollback()
 
 	// Reset the Query to a new query handler with the original database connection after the transaction is done.

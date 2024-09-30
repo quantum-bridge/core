@@ -3,8 +3,8 @@ package squirrelizer
 import (
 	"database/sql"
 	"github.com/pkg/errors"
+	"github.com/quantum-bridge/core/pkg/squirrelizer/shared"
 	"sync"
-	"time"
 )
 
 // Database is the interface for the database client.
@@ -15,23 +15,14 @@ type Database interface {
 	SQLInstance() *sql.DB
 }
 
-// DBConfig is the structure that holds the database configuration.
-type DBConfig struct {
-	URL                      string        `config:"url,required"`
-	MaxOpenConnections       int           `config:"max_open_connections"`
-	MaxIdleConnections       int           `config:"max_idle_connections"`
-	MinListenerRetryDuration time.Duration `config:"min_listener_retry_duration"`
-	MaxListenerRetryDuration time.Duration `config:"max_listener_retry_duration"`
-}
-
 // database is the structure that holds the database client data and configuration.
 type database struct {
-	config DBConfig
+	config shared.DBConfig
 	once   sync.Once
 }
 
-// NewDatabase creates a new database client instance with pre-loaded configuration.
-func NewDatabase(config DBConfig) Database {
+// NewDatabase creates a new database client instance with preloaded configuration.
+func NewDatabase(config shared.DBConfig) Database {
 	return &database{
 		config: config,
 	}
