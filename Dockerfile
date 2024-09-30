@@ -22,4 +22,4 @@ FROM alpine:latest
 RUN apk --no-cache add ca-certificates
 COPY --from=builder /app/main /app/main
 
-ENTRYPOINT ["/app/main"]
+ENTRYPOINT ["/app/main", "run", "service", "tx-history"]
