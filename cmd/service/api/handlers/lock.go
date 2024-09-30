@@ -1,10 +1,9 @@
 package handlers
 
 import (
-	"fmt"
 	"github.com/quantum-bridge/core/cmd/data"
-	"github.com/quantum-bridge/core/cmd/service/requests"
-	"github.com/quantum-bridge/core/cmd/service/responses"
+	"github.com/quantum-bridge/core/cmd/service/api/requests"
+	"github.com/quantum-bridge/core/cmd/service/api/responses"
 	"math/big"
 	"net/http"
 )
@@ -138,25 +137,6 @@ func Lock(w http.ResponseWriter, r *http.Request) {
 
 		return
 	}
-
-	fmt.Println("Tx", tx)
-
-	// Save transaction history to the database.
-	//if err := TransactionsHistoryQuery(r.Context()).Insert(&postgresql.TransactionsHistory{
-	//	TxHash:       "test123",
-	//	TokenAddress: "testtoken123",
-	//	TokenID:      request.TokenID,
-	//	Amount:       request.Amount.String(),
-	//	FromAddress:  request.From,
-	//	ToAddress:    request.To,
-	//	NetworkFrom:  request.ChainFrom,
-	//	NetworkTo:    request.ChainTo,
-	//}); err != nil {
-	//	Log(r.Context()).Errorf("failed to save transaction history: %v", err)
-	//	http.Error(w, "failed to save transaction history", http.StatusInternalServerError)
-	//
-	//	return
-	//}
 
 	respond(w, response)
 }

@@ -2,7 +2,7 @@ package responses
 
 import (
 	datashared "github.com/quantum-bridge/core/cmd/data/shared"
-	"github.com/quantum-bridge/core/cmd/service/shared"
+	"github.com/quantum-bridge/core/cmd/service/api/shared"
 )
 
 // NewNFTResponse creates a new shared.NFTResponse from the given token ID and metadata.

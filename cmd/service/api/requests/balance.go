@@ -3,7 +3,7 @@ package requests
 import (
 	"github.com/go-chi/chi"
 	"github.com/pkg/errors"
-	"github.com/quantum-bridge/core/cmd/service/shared"
+	"github.com/quantum-bridge/core/cmd/service/api/shared"
 	"net/http"
 )
 

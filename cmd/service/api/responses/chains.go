@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"github.com/pkg/errors"
 	datashared "github.com/quantum-bridge/core/cmd/data/shared"
-	"github.com/quantum-bridge/core/cmd/service/shared"
+	"github.com/quantum-bridge/core/cmd/service/api/shared"
 )
 
 // NewChainListResponse creates a new shared.ChainListResponse from the given chains and tokens.
