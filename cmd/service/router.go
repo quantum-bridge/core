@@ -8,7 +8,7 @@ import (
 	pgrepositories "github.com/quantum-bridge/core/cmd/data/postgresql/repositories"
 	"github.com/quantum-bridge/core/cmd/data/repositories"
 	"github.com/quantum-bridge/core/cmd/proxy"
-	"github.com/quantum-bridge/core/cmd/service/handlers"
+	"github.com/quantum-bridge/core/cmd/service/api/handlers"
 	"net/http"
 )
 
