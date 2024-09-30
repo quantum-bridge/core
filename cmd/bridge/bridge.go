@@ -30,12 +30,14 @@ func Run(args []string) {
 	// Load the configuration from the environment.
 	cfg := config.New(env.MustFromEnv())
 
-	// Create a new application instance with the name and description.
+	// Application instance with the name and description.
 	application := kingpin.New("bridge", "Core bridge API")
 
+	// Commands for the running of the service.
 	runCommand := application.Command("run", "run the bridge service")
 	runService := runCommand.Command("service", "run the bridge service")
 
+	// Commands for the migration of the database.
 	migrateCommand := application.Command("migrate", "migrate up the database")
 	migrateUpCommand := migrateCommand.Command("up", "migrate up the database")
 	migrateDownCommand := migrateCommand.Command("down", "migrate down the database")
@@ -49,6 +51,15 @@ func Run(args []string) {
 
 	switch parameters {
 	case runService.FullCommand():
+		servicesMap := make(map[string]bool)
+		for _, svc := range args[3:] {
+			servicesMap[svc] = true
+		}
+
+		cfg.SetServicesConfig(&config.ServicesConfig{
+			TxHistory: servicesMap["tx-history"],
+		})
+
 		// Start the Core BackEnd service.
 		service.Run(cfg, logger)
 	case migrateUpCommand.FullCommand():
