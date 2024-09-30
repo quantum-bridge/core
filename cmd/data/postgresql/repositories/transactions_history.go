@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"fmt"
 	sq "github.com/Masterminds/squirrel"
 	"github.com/fatih/structs"
 	"github.com/quantum-bridge/core/pkg/squirrelizer"
@@ -15,10 +16,16 @@ type TransactionsHistoryRepository interface {
 	New() TransactionsHistoryRepository
 	// Get returns the first transactions history that matches the given filters.
 	Get() (*TransactionsHistory, error)
-	// Insert inserts the given transactions history into the database.
-	Insert(transactionsHistory *TransactionsHistory) error
 	// Select returns the transactions history that match the given filters.
 	Select() ([]TransactionsHistory, error)
+	// Insert inserts the given transactions history into the database.
+	Insert(transactionsHistory *TransactionsHistory) error
+	// Where sets the where clause for the transactions history query.
+	Where(column, value string) TransactionsHistoryRepository
+	// OrderBy sets the order by for the transactions history query.
+	OrderBy(column, direction string) TransactionsHistoryRepository
+	// Limit sets the limit for the transactions history query.
+	Limit(limit uint64) TransactionsHistoryRepository
 }
 
 var (
@@ -53,6 +60,14 @@ func (q *transactionsHistory) Get() (*TransactionsHistory, error) {
 	return &result, err
 }
 
+// Select returns the transactions history that match the given filters.
+func (q *transactionsHistory) Select() ([]TransactionsHistory, error) {
+	var result []TransactionsHistory
+	err := q.db.Select(&result, q.sql)
+
+	return result, err
+}
+
 // Insert inserts the given transactions history into the database.
 func (q *transactionsHistory) Insert(transactionsHistory *TransactionsHistory) error {
 	mapping := structs.Map(transactionsHistory)
@@ -64,10 +79,23 @@ func (q *transactionsHistory) Insert(transactionsHistory *TransactionsHistory) e
 	return err
 }
 
-// Select returns the transactions history that match the given filters.
-func (q *transactionsHistory) Select() ([]TransactionsHistory, error) {
-	var result []TransactionsHistory
-	err := q.db.Select(&result, q.sql)
+// Where sets the where clause for the transactions history query.
+func (q *transactionsHistory) Where(column, value string) TransactionsHistoryRepository {
+	q.sql = q.sql.Where(sq.Eq{column: value})
 
-	return result, err
+	return q
+}
+
+// OrderBy sets the order by for the transactions history query.
+func (q *transactionsHistory) OrderBy(column, direction string) TransactionsHistoryRepository {
+	q.sql = q.sql.OrderBy(fmt.Sprintf("%s %s", column, direction))
+
+	return q
+}
+
+// Limit sets the limit for the transactions history query.
+func (q *transactionsHistory) Limit(limit uint64) TransactionsHistoryRepository {
+	q.sql = q.sql.Limit(limit)
+
+	return q
 }
