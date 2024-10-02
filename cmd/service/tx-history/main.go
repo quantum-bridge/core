@@ -40,10 +40,16 @@ func (s *txHistoryService) Run() {
 			}
 
 			// Store missed events in the database before listening to new events.
-			s.storeMissedEVMEvents(client, chain)
+			s.storeMissedEVMDepositedEvents(client, chain)
 
 			// Listen to new events from the chain and store them in the database.
-			go s.storeEVMEvents(client, chain)
+			go s.storeEVMDepositedEvents(client, chain)
+
+			// Store missed events in the database before listening to new events.
+			s.storeMissedEVMWithdrawnEvents(client, chain)
+			
+			// Listen to new events from the chain and store them in the database.
+			go s.storeEVMWithdrawnEvents(client, chain)
 
 		default:
 			s.logger.Errorf("unsupported chain type: %s", chain.Type)
