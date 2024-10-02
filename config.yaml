@@ -39,7 +39,7 @@ bridge:
           token_address: ""
           # Bridging type: `liquidity_pool` (token locked/unlocked on bridge contract), `mintable` (token burned/minted).
           bridge_type:
-          # Specify auto send true if you want to use bridge to send tokens instead of user.
+          # Specify auto send true if you want to use bridge to send tokens instead of user (If true, user will not need to sign transaction to withdraw tokens from bridge).
           auto_send:
 
   # List of supported chains.
@@ -68,6 +68,8 @@ bridge:
         rpc_url: ""
         # Explorer API URL.
         api_url: ""
+        # API key for API URL for getting chain data from explorer.
+        api_key: ""
         # Blockchain explorer URL.
         explorer_url: ""
 
