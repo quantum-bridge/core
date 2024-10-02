@@ -33,7 +33,7 @@ func (s *service) router() chi.Router {
 			handlers.ChainsContextMiddleware(repositories.NewChains(s.chains)),
 			handlers.TokenChainsContextMiddleware(repositories.NewTokenChains(s.tokenChains)),
 			handlers.ProxyContextMiddleware(proxies),
-			handlers.TransactionsHistoryContextMiddleware(pgrepositories.NewTransactionsHistory(s.db)),
+			handlers.DepositsHistoryContextMiddleware(pgrepositories.NewDepositsHistory(s.db)),
 		),
 		cors.Handler(cors.Options{
 			AllowedOrigins:   []string{"*"},
