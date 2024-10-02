@@ -23,8 +23,8 @@ const (
 	tokenChainsCtx
 	// proxyCtx is the context key for the proxy.
 	proxyCtx
-	// transactionsHistoryCtx is the context key for the database.
-	transactionsHistoryCtx
+	// depositsHistoryCtx is the context key for the database.
+	depositsHistoryCtx
 )
 
 // LogContextMiddleware is a middleware that adds the logger to the context.
@@ -62,10 +62,10 @@ func ProxyContextMiddleware(proxy proxy.Proxy) func(ctx context.Context) context
 	}
 }
 
-// TransactionsHistoryContextMiddleware is a middleware that adds the database to the context.
-func TransactionsHistoryContextMiddleware(transactionsHistoryQuery pgrepositories.TransactionsHistoryRepository) func(ctx context.Context) context.Context {
+// DepositsHistoryContextMiddleware is a middleware that adds the database to the context.
+func DepositsHistoryContextMiddleware(transactionsHistoryQuery pgrepositories.DepositsHistoryRepository) func(ctx context.Context) context.Context {
 	return func(ctx context.Context) context.Context {
-		return context.WithValue(ctx, transactionsHistoryCtx, transactionsHistoryQuery)
+		return context.WithValue(ctx, depositsHistoryCtx, transactionsHistoryQuery)
 	}
 }
 
@@ -94,7 +94,7 @@ func Proxy(ctx context.Context) proxy.Proxy {
 	return ctx.Value(proxyCtx).(proxy.Proxy)
 }
 
-// TransactionsHistoryQuery returns the database client that are being used in the bridge.
-func TransactionsHistoryQuery(ctx context.Context) pgrepositories.TransactionsHistoryRepository {
-	return ctx.Value(transactionsHistoryCtx).(pgrepositories.TransactionsHistoryRepository).New()
+// DepositsHistoryQuery returns the database client that are being used in the bridge.
+func DepositsHistoryQuery(ctx context.Context) pgrepositories.DepositsHistoryRepository {
+	return ctx.Value(depositsHistoryCtx).(pgrepositories.DepositsHistoryRepository).New()
 }
