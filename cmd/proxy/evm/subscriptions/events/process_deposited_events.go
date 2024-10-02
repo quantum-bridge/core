@@ -7,8 +7,8 @@ import (
 	"sync"
 )
 
-// ProcessEvents is the interface for processing events.
-type ProcessEvents interface {
+// ProcessDepositedEvents is the interface for processing deposit events.
+type ProcessDepositedEvents interface {
 	// ProcessDepositedNativeEvent processes the deposited native event.
 	ProcessDepositedNativeEvent(filterQuery *bind.FilterOpts, wg *sync.WaitGroup)
 	// ProcessDepositedERC20Event processes the deposited ERC20 event.
@@ -19,8 +19,8 @@ type ProcessEvents interface {
 	ProcessDepositedERC1155Event(filterQuery *bind.FilterOpts, wg *sync.WaitGroup)
 }
 
-// processEvents is the struct that holds the process events service.
-type processEvents struct {
+// processDepositedEvents is the struct that holds the process deposited events service.
+type processDepositedEvents struct {
 	logger         *zap.SugaredLogger
 	bridgeFilterer bridge.BridgeFilterer
 	nativeChan     chan *bridge.BridgeDepositedNative
@@ -30,8 +30,8 @@ type processEvents struct {
 	errorChan      chan error
 }
 
-// NewProcessEvents creates a new process events service with the given bridge filterer and channels.
-func NewProcessEvents(
+// NewProcessDepositedEvents creates a new process events service with the given bridge filterer and channels.
+func NewProcessDepositedEvents(
 	logger *zap.SugaredLogger,
 	bridgeFilterer bridge.BridgeFilterer,
 	nativeChan chan *bridge.BridgeDepositedNative,
@@ -39,8 +39,8 @@ func NewProcessEvents(
 	erc721Chan chan *bridge.BridgeDepositedERC721,
 	erc1155Chan chan *bridge.BridgeDepositedERC1155,
 	errorChan chan error,
-) ProcessEvents {
-	return &processEvents{
+) ProcessDepositedEvents {
+	return &processDepositedEvents{
 		logger:         logger,
 		bridgeFilterer: bridgeFilterer,
 		nativeChan:     nativeChan,
@@ -52,7 +52,7 @@ func NewProcessEvents(
 }
 
 // ProcessDepositedNativeEvent processes the deposited native event.
-func (p *processEvents) ProcessDepositedNativeEvent(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) {
+func (p *processDepositedEvents) ProcessDepositedNativeEvent(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) {
 	depositedNativeLogs, err := p.bridgeFilterer.FilterDepositedNative(filterQuery)
 	if err != nil {
 		p.errorChan <- err
@@ -74,7 +74,7 @@ func (p *processEvents) ProcessDepositedNativeEvent(filterQuery *bind.FilterOpts
 }
 
 // ProcessDepositedERC20Event processes the deposited ERC20 event.
-func (p *processEvents) ProcessDepositedERC20Event(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) {
+func (p *processDepositedEvents) ProcessDepositedERC20Event(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) {
 	depositedERC20Logs, err := p.bridgeFilterer.FilterDepositedERC20(filterQuery, nil)
 	if err != nil {
 		p.errorChan <- err
@@ -98,7 +98,7 @@ func (p *processEvents) ProcessDepositedERC20Event(filterQuery *bind.FilterOpts,
 }
 
 // ProcessDepositedERC721Event processes the deposited ERC721 event.
-func (p *processEvents) ProcessDepositedERC721Event(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) {
+func (p *processDepositedEvents) ProcessDepositedERC721Event(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) {
 	depositedERC721Logs, err := p.bridgeFilterer.FilterDepositedERC721(filterQuery, nil)
 	if err != nil {
 		p.errorChan <- err
@@ -122,7 +122,7 @@ func (p *processEvents) ProcessDepositedERC721Event(filterQuery *bind.FilterOpts
 }
 
 // ProcessDepositedERC1155Event processes the deposited ERC1155 event.
-func (p *processEvents) ProcessDepositedERC1155Event(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) {
+func (p *processDepositedEvents) ProcessDepositedERC1155Event(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) {
 	depositedERC1155Logs, err := p.bridgeFilterer.FilterDepositedERC1155(filterQuery)
 	if err != nil {
 		p.errorChan <- err
