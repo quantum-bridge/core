@@ -16,6 +16,14 @@ type Subscription interface {
 	DepositedERC721() (chan *bridge.BridgeDepositedERC721, event.Subscription, error)
 	// DepositedERC1155 returns a channel for the deposited ERC1155 events and the subscription.
 	DepositedERC1155() (chan *bridge.BridgeDepositedERC1155, event.Subscription, error)
+	// WithdrawnNative returns a channel for the withdrawn native events and the subscription.
+	WithdrawnNative() (chan *bridge.BridgeWithdrawnNative, event.Subscription, error)
+	// WithdrawnERC20 returns a channel for the withdrawn ERC20 events and the subscription.
+	WithdrawnERC20() (chan *bridge.BridgeWithdrawnERC20, event.Subscription, error)
+	// WithdrawnERC721 returns a channel for the withdrawn ERC721 events and the subscription.
+	WithdrawnERC721() (chan *bridge.BridgeWithdrawnERC721, event.Subscription, error)
+	// WithdrawnERC1155 returns a channel for the withdrawn ERC1155 events and the subscription.
+	WithdrawnERC1155() (chan *bridge.BridgeWithdrawnERC1155, event.Subscription, error)
 }
 
 // subscription is the struct that holds the subscription service.
@@ -69,6 +77,50 @@ func (s *subscription) DepositedERC721() (chan *bridge.BridgeDepositedERC721, ev
 func (s *subscription) DepositedERC1155() (chan *bridge.BridgeDepositedERC1155, event.Subscription, error) {
 	events := make(chan *bridge.BridgeDepositedERC1155)
 	sub, err := s.bridgeFilterer.WatchDepositedERC1155(nil, events)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return events, sub, nil
+}
+
+// WithdrawnNative returns a channel for the withdrawn native events and the subscription.
+func (s *subscription) WithdrawnNative() (chan *bridge.BridgeWithdrawnNative, event.Subscription, error) {
+	events := make(chan *bridge.BridgeWithdrawnNative)
+	sub, err := s.bridgeFilterer.WatchWithdrawnNative(nil, events)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return events, sub, nil
+}
+
+// WithdrawnERC20 returns a channel for the withdrawn ERC20 events and the subscription.
+func (s *subscription) WithdrawnERC20() (chan *bridge.BridgeWithdrawnERC20, event.Subscription, error) {
+	events := make(chan *bridge.BridgeWithdrawnERC20)
+	sub, err := s.bridgeFilterer.WatchWithdrawnERC20(nil, events)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return events, sub, nil
+}
+
+// WithdrawnERC721 returns a channel for the withdrawn ERC721 events and the subscription.
+func (s *subscription) WithdrawnERC721() (chan *bridge.BridgeWithdrawnERC721, event.Subscription, error) {
+	events := make(chan *bridge.BridgeWithdrawnERC721)
+	sub, err := s.bridgeFilterer.WatchWithdrawnERC721(nil, events)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return events, sub, nil
+}
+
+// WithdrawnERC1155 returns a channel for the withdrawn ERC1155 events and the subscription.
+func (s *subscription) WithdrawnERC1155() (chan *bridge.BridgeWithdrawnERC1155, event.Subscription, error) {
+	events := make(chan *bridge.BridgeWithdrawnERC1155)
+	sub, err := s.bridgeFilterer.WatchWithdrawnERC1155(nil, events)
 	if err != nil {
 		return nil, nil, err
 	}
