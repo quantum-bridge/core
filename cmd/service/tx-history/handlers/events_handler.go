@@ -347,10 +347,10 @@ func (h *eventHandlers) HandleEVMMissedWithdrawalEvents(ctx context.Context, con
 	var wg sync.WaitGroup
 	wg.Add(4) // 4 events to process (native, erc20, erc721, erc1155)
 
-	go processEvents.ProcessWithdrawnNativeEvent(filterQuery, &wg)
-	go processEvents.ProcessWithdrawnERC20Event(filterQuery, &wg)
-	go processEvents.ProcessWithdrawnERC721Event(filterQuery, &wg)
-	go processEvents.ProcessWithdrawnERC1155Event(filterQuery, &wg)
+	go processEvents.ProcessWithdrawnNativeEventWithBackoff(filterQuery, &wg)
+	go processEvents.ProcessWithdrawnERC20EventWithBackoff(filterQuery, &wg)
+	go processEvents.ProcessWithdrawnERC721EventWithBackoff(filterQuery, &wg)
+	go processEvents.ProcessWithdrawnERC1155EventWithBackoff(filterQuery, &wg)
 
 	go h.processMissedWithdrawnEvents(nativeChan, erc20Chan, erc721Chan, erc1155Chan, errorChan)
 
