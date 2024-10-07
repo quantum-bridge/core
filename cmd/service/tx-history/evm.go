@@ -33,8 +33,7 @@ func (s *txHistoryService) storeEVMDepositedEvents(client *ethclient.Client, cha
 		panic(err)
 	}
 
-	go eventHandlers.HandleEVMDepositedEvents(common.HexToAddress(chain.BridgeAddress))
-
+	eventHandlers.HandleEVMDepositedEvents(common.HexToAddress(chain.BridgeAddress))
 }
 
 // storeMissedEVMDepositedEvents stores the missed EVM events in the database for the given chain.
@@ -66,7 +65,7 @@ func (s *txHistoryService) storeEVMWithdrawnEvents(client *ethclient.Client, cha
 		panic(err)
 	}
 
-	go eventHandlers.HandleEVMWithdrawnEvents(common.HexToAddress(chain.BridgeAddress))
+	eventHandlers.HandleEVMWithdrawnEvents(common.HexToAddress(chain.BridgeAddress))
 }
 
 // storeMissedEVMWithdrawnEvents stores the missed EVM events in the database for the given chain.
