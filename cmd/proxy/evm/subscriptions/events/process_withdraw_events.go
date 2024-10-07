@@ -1,7 +1,9 @@
 package events
 
 import (
+	"github.com/cenkalti/backoff"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/pkg/errors"
 	"github.com/quantum-bridge/core/cmd/proxy/evm/generated/bridge"
 	"go.uber.org/zap"
 	"sync"
@@ -9,14 +11,14 @@ import (
 
 // ProcessWithdrawnEvents is the interface for processing withdrawal events.
 type ProcessWithdrawnEvents interface {
-	// ProcessWithdrawnNativeEvent processes the withdrawn native event.
-	ProcessWithdrawnNativeEvent(filterQuery *bind.FilterOpts, wg *sync.WaitGroup)
-	// ProcessWithdrawnERC20Event processes the withdrawn ERC20 event.
-	ProcessWithdrawnERC20Event(filterQuery *bind.FilterOpts, wg *sync.WaitGroup)
-	// ProcessWithdrawnERC721Event processes the withdrawn ERC721 event.
-	ProcessWithdrawnERC721Event(filterQuery *bind.FilterOpts, wg *sync.WaitGroup)
-	// ProcessWithdrawnERC1155Event processes the withdrawn ERC1155 event.
-	ProcessWithdrawnERC1155Event(filterQuery *bind.FilterOpts, wg *sync.WaitGroup)
+	// ProcessWithdrawnNativeEventWithBackoff processes the withdrawn native event with a backoff mechanism.
+	ProcessWithdrawnNativeEventWithBackoff(filterQuery *bind.FilterOpts, wg *sync.WaitGroup)
+	// ProcessWithdrawnERC20EventWithBackoff processes the withdrawn ERC20 event with a backoff mechanism.
+	ProcessWithdrawnERC20EventWithBackoff(filterQuery *bind.FilterOpts, wg *sync.WaitGroup)
+	// ProcessWithdrawnERC721EventWithBackoff processes the withdrawn ERC721 event with a backoff mechanism.
+	ProcessWithdrawnERC721EventWithBackoff(filterQuery *bind.FilterOpts, wg *sync.WaitGroup)
+	// ProcessWithdrawnERC1155EventWithBackoff processes the withdrawn ERC1155 event with a backoff mechanism.
+	ProcessWithdrawnERC1155EventWithBackoff(filterQuery *bind.FilterOpts, wg *sync.WaitGroup)
 }
 
 // processWithdrawEvents is the struct that holds the process withdrawn events service.
@@ -51,13 +53,45 @@ func NewProcessWithdrawnEvents(
 	}
 }
 
-// ProcessWithdrawnNativeEvent processes the withdrawn native event.
-func (p *processWithdrawnEvents) ProcessWithdrawnNativeEvent(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) {
+// ProcessWithdrawnNativeEventWithBackoff processes the withdrawn native event with a backoff mechanism.
+func (p *processWithdrawnEvents) ProcessWithdrawnNativeEventWithBackoff(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) {
+	err := backoff.Retry(p.withBackoff(p.processWithdrawnNativeEvent, filterQuery, wg), backoff.NewExponentialBackOff())
+	if err != nil {
+		p.errorChan <- errors.Wrap(err, "failed to process withdrawn native event after retries")
+	}
+}
+
+// ProcessWithdrawnERC20EventWithBackoff processes the withdrawn ERC20 event with a backoff mechanism.
+func (p *processWithdrawnEvents) ProcessWithdrawnERC20EventWithBackoff(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) {
+	err := backoff.Retry(p.withBackoff(p.processWithdrawnERC20Event, filterQuery, wg), backoff.NewExponentialBackOff())
+	if err != nil {
+		p.errorChan <- errors.Wrap(err, "failed to process withdrawn ERC20 event after retries")
+	}
+}
+
+// ProcessWithdrawnERC721EventWithBackoff processes the withdrawn ERC721 event with a backoff mechanism.
+func (p *processWithdrawnEvents) ProcessWithdrawnERC721EventWithBackoff(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) {
+	err := backoff.Retry(p.withBackoff(p.processWithdrawnERC721Event, filterQuery, wg), backoff.NewExponentialBackOff())
+	if err != nil {
+		p.errorChan <- errors.Wrap(err, "failed to process withdrawn ERC721 event after retries")
+	}
+}
+
+// ProcessWithdrawnERC1155EventWithBackoff processes the withdrawn ERC1155 event with a backoff mechanism.
+func (p *processWithdrawnEvents) ProcessWithdrawnERC1155EventWithBackoff(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) {
+	err := backoff.Retry(p.withBackoff(p.processWithdrawnERC1155Event, filterQuery, wg), backoff.NewExponentialBackOff())
+	if err != nil {
+		p.errorChan <- errors.Wrap(err, "failed to process withdrawn ERC1155 event after retries")
+	}
+}
+
+// processWithdrawnNativeEvent processes the withdrawn native event.
+func (p *processWithdrawnEvents) processWithdrawnNativeEvent(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) error {
 	withdrawnNativeLogs, err := p.bridgeFilterer.FilterWithdrawnNative(filterQuery)
 	if err != nil {
-		p.errorChan <- err
+		p.errorChan <- errors.Wrap(err, "failed to create filter for withdrawn native event")
 
-		return
+		return err
 	}
 	defer withdrawnNativeLogs.Close()
 
@@ -66,22 +100,24 @@ func (p *processWithdrawnEvents) ProcessWithdrawnNativeEvent(filterQuery *bind.F
 	}
 
 	if err := withdrawnNativeLogs.Error(); err != nil {
-		p.errorChan <- err
+		p.errorChan <- errors.Wrap(err, "failed to process withdrawn native event")
 
-		return
+		return err
 	}
 
 	close(p.nativeChan)
 	wg.Done()
+
+	return nil
 }
 
-// ProcessWithdrawnERC20Event processes the withdrawn ERC20 event.
-func (p *processWithdrawnEvents) ProcessWithdrawnERC20Event(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) {
+// processWithdrawnERC20Event processes the withdrawn ERC20 event.
+func (p *processWithdrawnEvents) processWithdrawnERC20Event(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) error {
 	withdrawnERC20Logs, err := p.bridgeFilterer.FilterWithdrawnERC20(filterQuery)
 	if err != nil {
-		p.errorChan <- err
+		p.errorChan <- errors.Wrap(err, "failed to create filter for withdrawn ERC20 event")
 
-		return
+		return err
 	}
 	defer withdrawnERC20Logs.Close()
 
@@ -90,22 +126,24 @@ func (p *processWithdrawnEvents) ProcessWithdrawnERC20Event(filterQuery *bind.Fi
 	}
 
 	if err := withdrawnERC20Logs.Error(); err != nil {
-		p.errorChan <- err
+		p.errorChan <- errors.Wrap(err, "failed to process withdrawn ERC20 event")
 
-		return
+		return err
 	}
 
 	close(p.erc20Chan)
 	wg.Done()
+
+	return nil
 }
 
-// ProcessWithdrawnERC721Event processes the withdrawn ERC721 event.
-func (p *processWithdrawnEvents) ProcessWithdrawnERC721Event(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) {
+// processWithdrawnERC721Event processes the withdrawn ERC721 event.
+func (p *processWithdrawnEvents) processWithdrawnERC721Event(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) error {
 	withdrawnERC721Logs, err := p.bridgeFilterer.FilterWithdrawnERC721(filterQuery)
 	if err != nil {
-		p.errorChan <- err
+		p.errorChan <- errors.Wrap(err, "failed to create filter for withdrawn ERC721 event")
 
-		return
+		return err
 	}
 	defer withdrawnERC721Logs.Close()
 
@@ -114,22 +152,24 @@ func (p *processWithdrawnEvents) ProcessWithdrawnERC721Event(filterQuery *bind.F
 	}
 
 	if err := withdrawnERC721Logs.Error(); err != nil {
-		p.errorChan <- err
+		p.errorChan <- errors.Wrap(err, "failed to process withdrawn ERC721 event")
 
-		return
+		return err
 	}
 
 	close(p.erc721Chan)
 	wg.Done()
+
+	return nil
 }
 
-// ProcessWithdrawnERC1155Event processes the withdrawn ERC1155 event.
-func (p *processWithdrawnEvents) ProcessWithdrawnERC1155Event(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) {
+// processWithdrawnERC1155Event processes the withdrawn ERC1155 event.
+func (p *processWithdrawnEvents) processWithdrawnERC1155Event(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) error {
 	withdrawnERC1155Logs, err := p.bridgeFilterer.FilterWithdrawnERC1155(filterQuery)
 	if err != nil {
-		p.errorChan <- err
+		p.errorChan <- errors.Wrap(err, "failed to create filter for withdrawn ERC1155 event")
 
-		return
+		return err
 	}
 	defer withdrawnERC1155Logs.Close()
 
@@ -138,11 +178,20 @@ func (p *processWithdrawnEvents) ProcessWithdrawnERC1155Event(filterQuery *bind.
 	}
 
 	if err := withdrawnERC1155Logs.Error(); err != nil {
-		p.errorChan <- err
+		p.errorChan <- errors.Wrap(err, "failed to process withdrawn ERC1155 event")
 
-		return
+		return err
 	}
 
 	close(p.erc1155Chan)
 	wg.Done()
+
+	return nil
+}
+
+// withBackoff creates an operation for backoff.Retry
+func (p *processWithdrawnEvents) withBackoff(operation func(*bind.FilterOpts, *sync.WaitGroup) error, filterQuery *bind.FilterOpts, wg *sync.WaitGroup) func() error {
+	return func() error {
+		return operation(filterQuery, wg)
+	}
 }
