@@ -1,7 +1,9 @@
 package events
 
 import (
+	"github.com/cenkalti/backoff"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/pkg/errors"
 	"github.com/quantum-bridge/core/cmd/proxy/evm/generated/bridge"
 	"go.uber.org/zap"
 	"sync"
@@ -9,14 +11,14 @@ import (
 
 // ProcessDepositedEvents is the interface for processing deposit events.
 type ProcessDepositedEvents interface {
-	// ProcessDepositedNativeEvent processes the deposited native event.
-	ProcessDepositedNativeEvent(filterQuery *bind.FilterOpts, wg *sync.WaitGroup)
-	// ProcessDepositedERC20Event processes the deposited ERC20 event.
-	ProcessDepositedERC20Event(filterQuery *bind.FilterOpts, wg *sync.WaitGroup)
-	// ProcessDepositedERC721Event processes the deposited ERC721 event.
-	ProcessDepositedERC721Event(filterQuery *bind.FilterOpts, wg *sync.WaitGroup)
-	// ProcessDepositedERC1155Event processes the deposited ERC1155 event.
-	ProcessDepositedERC1155Event(filterQuery *bind.FilterOpts, wg *sync.WaitGroup)
+	// ProcessDepositedNativeEventWithBackoff processes the deposited native event with a backoff mechanism.
+	ProcessDepositedNativeEventWithBackoff(filterQuery *bind.FilterOpts, wg *sync.WaitGroup)
+	// ProcessDepositedERC20EventWithBackoff processes the deposited ERC20 event with a backoff mechanism.
+	ProcessDepositedERC20EventWithBackoff(filterQuery *bind.FilterOpts, wg *sync.WaitGroup)
+	// ProcessDepositedERC721EventWithBackoff processes the deposited ERC721 event with a backoff mechanism.
+	ProcessDepositedERC721EventWithBackoff(filterQuery *bind.FilterOpts, wg *sync.WaitGroup)
+	// ProcessDepositedERC1155EventWithBackoff processes the deposited ERC1155 event with a backoff mechanism.
+	ProcessDepositedERC1155EventWithBackoff(filterQuery *bind.FilterOpts, wg *sync.WaitGroup)
 }
 
 // processDepositedEvents is the struct that holds the process deposited events service.
@@ -51,13 +53,45 @@ func NewProcessDepositedEvents(
 	}
 }
 
-// ProcessDepositedNativeEvent processes the deposited native event.
-func (p *processDepositedEvents) ProcessDepositedNativeEvent(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) {
+// ProcessDepositedNativeEventWithBackoff processes the deposited native event.
+func (p *processDepositedEvents) ProcessDepositedNativeEventWithBackoff(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) {
+	err := backoff.Retry(p.withBackoff(p.processDepositedNativeEvent, filterQuery, wg), backoff.NewExponentialBackOff())
+	if err != nil {
+		p.errorChan <- errors.Wrap(err, "failed to process deposited native event after retries")
+	}
+}
+
+// ProcessDepositedERC20EventWithBackoff processes the deposited ERC20 event.
+func (p *processDepositedEvents) ProcessDepositedERC20EventWithBackoff(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) {
+	err := backoff.Retry(p.withBackoff(p.processDepositedERC20Event, filterQuery, wg), backoff.NewExponentialBackOff())
+	if err != nil {
+		p.errorChan <- errors.Wrap(err, "failed to process deposited ERC20 event after retries")
+	}
+}
+
+// ProcessDepositedERC721EventWithBackoff processes the deposited ERC721 event.
+func (p *processDepositedEvents) ProcessDepositedERC721EventWithBackoff(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) {
+	err := backoff.Retry(p.withBackoff(p.processDepositedERC721Event, filterQuery, wg), backoff.NewExponentialBackOff())
+	if err != nil {
+		p.errorChan <- errors.Wrap(err, "failed to process deposited ERC721 event after retries")
+	}
+}
+
+// ProcessDepositedERC1155EventWithBackoff processes the deposited ERC1155 event.
+func (p *processDepositedEvents) ProcessDepositedERC1155EventWithBackoff(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) {
+	err := backoff.Retry(p.withBackoff(p.processDepositedERC1155Event, filterQuery, wg), backoff.NewExponentialBackOff())
+	if err != nil {
+		p.errorChan <- errors.Wrap(err, "failed to process deposited ERC1155 event after retries")
+	}
+}
+
+// processDepositedNativeEvent processes the deposited native event.
+func (p *processDepositedEvents) processDepositedNativeEvent(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) error {
 	depositedNativeLogs, err := p.bridgeFilterer.FilterDepositedNative(filterQuery)
 	if err != nil {
-		p.errorChan <- err
+		p.errorChan <- errors.Wrap(err, "failed to create filter for deposited native event")
 
-		return
+		return err
 	}
 	defer depositedNativeLogs.Close()
 
@@ -66,20 +100,24 @@ func (p *processDepositedEvents) ProcessDepositedNativeEvent(filterQuery *bind.F
 	}
 
 	if err := depositedNativeLogs.Error(); err != nil {
-		p.errorChan <- err
+		p.errorChan <- errors.Wrap(err, "failed to process deposited native event")
+
+		return err
 	}
 
 	close(p.nativeChan)
 	wg.Done()
+
+	return nil
 }
 
-// ProcessDepositedERC20Event processes the deposited ERC20 event.
-func (p *processDepositedEvents) ProcessDepositedERC20Event(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) {
+// processDepositedERC20Event processes the deposited ERC20 event.
+func (p *processDepositedEvents) processDepositedERC20Event(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) error {
 	depositedERC20Logs, err := p.bridgeFilterer.FilterDepositedERC20(filterQuery, nil)
 	if err != nil {
-		p.errorChan <- err
+		p.errorChan <- errors.Wrap(err, "failed to create filter for deposited ERC20 event")
 
-		return
+		return err
 	}
 	defer depositedERC20Logs.Close()
 
@@ -88,22 +126,24 @@ func (p *processDepositedEvents) ProcessDepositedERC20Event(filterQuery *bind.Fi
 	}
 
 	if err := depositedERC20Logs.Error(); err != nil {
-		p.errorChan <- err
+		p.errorChan <- errors.Wrap(err, "failed to process deposited ERC20 event")
 
-		return
+		return err
 	}
 
 	close(p.erc20Chan)
 	wg.Done()
+
+	return nil
 }
 
-// ProcessDepositedERC721Event processes the deposited ERC721 event.
-func (p *processDepositedEvents) ProcessDepositedERC721Event(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) {
+// processDepositedERC721Event processes the deposited ERC721 event.
+func (p *processDepositedEvents) processDepositedERC721Event(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) error {
 	depositedERC721Logs, err := p.bridgeFilterer.FilterDepositedERC721(filterQuery, nil)
 	if err != nil {
-		p.errorChan <- err
+		p.errorChan <- errors.Wrap(err, "failed to create filter for deposited ERC721 event")
 
-		return
+		return err
 	}
 	defer depositedERC721Logs.Close()
 
@@ -112,22 +152,24 @@ func (p *processDepositedEvents) ProcessDepositedERC721Event(filterQuery *bind.F
 	}
 
 	if err := depositedERC721Logs.Error(); err != nil {
-		p.errorChan <- err
+		p.errorChan <- errors.Wrap(err, "failed to process deposited ERC721 event")
 
-		return
+		return err
 	}
 
 	close(p.erc721Chan)
 	wg.Done()
+
+	return nil
 }
 
-// ProcessDepositedERC1155Event processes the deposited ERC1155 event.
-func (p *processDepositedEvents) ProcessDepositedERC1155Event(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) {
+// processDepositedERC1155Event processes the deposited ERC1155 event.
+func (p *processDepositedEvents) processDepositedERC1155Event(filterQuery *bind.FilterOpts, wg *sync.WaitGroup) error {
 	depositedERC1155Logs, err := p.bridgeFilterer.FilterDepositedERC1155(filterQuery)
 	if err != nil {
-		p.errorChan <- err
+		p.errorChan <- errors.Wrap(err, "failed to create filter for deposited ERC1155 event")
 
-		return
+		return err
 	}
 	defer depositedERC1155Logs.Close()
 
@@ -136,11 +178,20 @@ func (p *processDepositedEvents) ProcessDepositedERC1155Event(filterQuery *bind.
 	}
 
 	if err := depositedERC1155Logs.Error(); err != nil {
-		p.errorChan <- err
+		p.errorChan <- errors.Wrap(err, "failed to process deposited ERC1155 event")
 
-		return
+		return err
 	}
 
 	close(p.erc1155Chan)
 	wg.Done()
+
+	return nil
+}
+
+// withBackoff creates an operation for backoff.Retry
+func (p *processDepositedEvents) withBackoff(operation func(*bind.FilterOpts, *sync.WaitGroup) error, filterQuery *bind.FilterOpts, wg *sync.WaitGroup) func() error {
+	return func() error {
+		return operation(filterQuery, wg)
+	}
 }
