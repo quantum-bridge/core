@@ -216,6 +216,11 @@ func (h *eventHandlers) HandleEVMWithdrawnEvents(contractAddress common.Address)
 
 // HandleEVMMissedDepositEvents handles the missed EVM deposit events from the last processed block and stores them in the database.
 func (h *eventHandlers) HandleEVMMissedDepositEvents(ctx context.Context, contractAddress common.Address, etherscan goetherscan.Client) error {
+	// Create a new context with cancellation function.
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel() // Make sure to cancel when we are finished with the context.
+
+	// Get the last deposited transaction history from the database.
 	lastDepositedTxHistory, err := h.depositsHistoryRepository.
 		Where("source_network", h.chain.ID).
 		OrderBy("block_number", "DESC").
@@ -270,14 +275,14 @@ func (h *eventHandlers) HandleEVMMissedDepositEvents(ctx context.Context, contra
 	processEvents := events.NewProcessDepositedEvents(h.logger, *bridgeFilterer, nativeChan, erc20Chan, erc721Chan, erc1155Chan, errorChan)
 
 	var wg sync.WaitGroup
-	wg.Add(4) // 4 events to process (native, erc20, erc721, erc1155)
+	wg.Add(4) // 4 events to process (native, erc20, erc721, erc1155).
 
-	go processEvents.ProcessDepositedNativeEvent(filterQuery, &wg)
-	go processEvents.ProcessDepositedERC20Event(filterQuery, &wg)
-	go processEvents.ProcessDepositedERC721Event(filterQuery, &wg)
-	go processEvents.ProcessDepositedERC1155Event(filterQuery, &wg)
+	go processEvents.ProcessDepositedNativeEventWithBackoff(filterQuery, &wg)
+	go processEvents.ProcessDepositedERC20EventWithBackoff(filterQuery, &wg)
+	go processEvents.ProcessDepositedERC721EventWithBackoff(filterQuery, &wg)
+	go processEvents.ProcessDepositedERC1155EventWithBackoff(filterQuery, &wg)
 
-	go h.processMissedDepositedEvents(nativeChan, erc20Chan, erc721Chan, erc1155Chan, errorChan)
+	go h.processMissedDepositedEvents(ctx, nativeChan, erc20Chan, erc721Chan, erc1155Chan, errorChan)
 
 	wg.Wait()
 
@@ -286,6 +291,11 @@ func (h *eventHandlers) HandleEVMMissedDepositEvents(ctx context.Context, contra
 
 // HandleEVMMissedWithdrawalEvents listens to the EVM withdrawal events and updates deposit status in the database accordingly.
 func (h *eventHandlers) HandleEVMMissedWithdrawalEvents(ctx context.Context, contractAddress common.Address, etherscan goetherscan.Client) error {
+	// Create a new context with cancellation function.
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel() // Make sure to cancel when we are finished with the context.
+
+	// Get the last withdrawn transaction history from the database.
 	lastWithdrawnTxHistory, err := h.withdrawalsHistoryRepository.
 		Where("destination_network", h.chain.ID).
 		OrderBy("block_number", "DESC").
@@ -352,7 +362,7 @@ func (h *eventHandlers) HandleEVMMissedWithdrawalEvents(ctx context.Context, con
 	go processEvents.ProcessWithdrawnERC721EventWithBackoff(filterQuery, &wg)
 	go processEvents.ProcessWithdrawnERC1155EventWithBackoff(filterQuery, &wg)
 
-	go h.processMissedWithdrawnEvents(nativeChan, erc20Chan, erc721Chan, erc1155Chan, errorChan)
+	go h.processMissedWithdrawnEvents(ctx, nativeChan, erc20Chan, erc721Chan, erc1155Chan, errorChan)
 
 	wg.Wait()
 
@@ -361,6 +371,7 @@ func (h *eventHandlers) HandleEVMMissedWithdrawalEvents(ctx context.Context, con
 
 // processMissedDepositedEvents processes the missed events and stores them in the database.
 func (h *eventHandlers) processMissedDepositedEvents(
+	ctx context.Context,
 	nativeChan chan *bridge.BridgeDepositedNative,
 	erc20Chan chan *bridge.BridgeDepositedERC20,
 	erc721Chan chan *bridge.BridgeDepositedERC721,
@@ -401,12 +412,16 @@ func (h *eventHandlers) processMissedDepositedEvents(
 			if err != nil {
 				h.logger.Error(err)
 			}
+		case <-ctx.Done():
+			// If the context is cancelled - finish the goroutine.
+			return
 		}
 	}
 }
 
 // processMissedWithdrawnEvents processes the missed withdrawn events and updates the withdrawn status in the database.
 func (h *eventHandlers) processMissedWithdrawnEvents(
+	ctx context.Context,
 	nativeChan chan *bridge.BridgeWithdrawnNative,
 	erc20Chan chan *bridge.BridgeWithdrawnERC20,
 	erc721Chan chan *bridge.BridgeWithdrawnERC721,
@@ -447,6 +462,9 @@ func (h *eventHandlers) processMissedWithdrawnEvents(
 			if err != nil {
 				h.logger.Error(err)
 			}
+		case <-ctx.Done():
+			// If the context is cancelled - finish the goroutine.
+			return
 		}
 	}
 }
