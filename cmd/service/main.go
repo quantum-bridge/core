@@ -29,7 +29,7 @@ type service struct {
 func (s *service) run() error {
 	if s.services.TxHistory {
 		go txHistory.NewTxHistory(s.logger, s.db, s.chains).Run()
-		s.logger.Infof("transaction history service is started successfully")
+		s.logger.Info("transaction history service is started successfully")
 	}
 
 	s.logger.Infof("API service listening on %s", s.listener.Addr().String())

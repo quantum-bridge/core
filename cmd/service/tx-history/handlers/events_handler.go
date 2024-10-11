@@ -183,28 +183,28 @@ func (h *eventHandlers) HandleEVMWithdrawnEvents(contractAddress common.Address)
 	for {
 		select {
 		case event := <-withdrawnNativeEventChan:
-			err := h.storeWithdrawnEvent(event.Raw.BlockNumber, event.TxHash, pkgcommon.NativeTokenAddress, event.Amount.String(), "", event.To.Hex(), false)
+			err := h.storeWithdrawnEvent(event.Raw.TxHash.Hex(), event.Raw.BlockNumber, event.TxHash, pkgcommon.NativeTokenAddress, event.Amount.String(), "", event.To.Hex(), false)
 			if err != nil {
 				h.logger.Error(errors.Wrap(err, "failed to store Native Withdrawn event to the database"))
 
 				return
 			}
 		case event := <-withdrawnERC20EventChan:
-			err := h.storeWithdrawnEvent(event.Raw.BlockNumber, event.TxHash, event.Token.Hex(), event.Amount.String(), "", event.To.Hex(), event.IsMintable)
+			err := h.storeWithdrawnEvent(event.Raw.TxHash.Hex(), event.Raw.BlockNumber, event.TxHash, event.Token.Hex(), event.Amount.String(), "", event.To.Hex(), event.IsMintable)
 			if err != nil {
 				h.logger.Error(errors.Wrap(err, "failed to store ERC20 Withdrawn event to the database"))
 
 				return
 			}
 		case event := <-withdrawnERC721EventChan:
-			err := h.storeWithdrawnEvent(event.Raw.BlockNumber, event.TxHash, event.Token.Hex(), "1", event.TokenId.String(), event.To.Hex(), event.IsMintable)
+			err := h.storeWithdrawnEvent(event.Raw.TxHash.Hex(), event.Raw.BlockNumber, event.TxHash, event.Token.Hex(), "1", event.TokenId.String(), event.To.Hex(), event.IsMintable)
 			if err != nil {
 				h.logger.Error(errors.Wrap(err, "failed to store ERC721 Withdrawn event to the database"))
 
 				return
 			}
 		case event := <-withdrawnERC1155EventChan:
-			err := h.storeWithdrawnEvent(event.Raw.BlockNumber, event.TxHash, event.Token.Hex(), event.Amount.String(), event.TokenId.String(), event.To.Hex(), event.IsMintable)
+			err := h.storeWithdrawnEvent(event.Raw.TxHash.Hex(), event.Raw.BlockNumber, event.TxHash, event.Token.Hex(), event.Amount.String(), event.TokenId.String(), event.To.Hex(), event.IsMintable)
 			if err != nil {
 				h.logger.Error(errors.Wrap(err, "failed to store ERC1155 Withdrawn event to the database"))
 
@@ -432,28 +432,28 @@ func (h *eventHandlers) processMissedWithdrawnEvents(
 		select {
 		case event := <-nativeChan:
 			if event != nil {
-				err := h.storeWithdrawnEvent(event.Raw.BlockNumber, event.TxHash, pkgcommon.NativeTokenAddress, event.Amount.String(), "", event.To.Hex(), false)
+				err := h.storeWithdrawnEvent(event.Raw.TxHash.Hex(), event.Raw.BlockNumber, event.TxHash, pkgcommon.NativeTokenAddress, event.Amount.String(), "", event.To.Hex(), false)
 				if err != nil {
 					h.logger.Error(errors.Wrap(err, "failed to store Native Withdrawn event to the database"))
 				}
 			}
 		case event := <-erc20Chan:
 			if event != nil {
-				err := h.storeWithdrawnEvent(event.Raw.BlockNumber, event.TxHash, event.Token.Hex(), event.Amount.String(), "", event.To.Hex(), event.IsMintable)
+				err := h.storeWithdrawnEvent(event.Raw.TxHash.Hex(), event.Raw.BlockNumber, event.TxHash, event.Token.Hex(), event.Amount.String(), "", event.To.Hex(), event.IsMintable)
 				if err != nil {
 					h.logger.Error(errors.Wrap(err, "failed to store ERC20 Withdrawn event to the database"))
 				}
 			}
 		case event := <-erc721Chan:
 			if event != nil {
-				err := h.storeWithdrawnEvent(event.Raw.BlockNumber, event.TxHash, event.Token.Hex(), "1", event.TokenId.String(), event.To.Hex(), event.IsMintable)
+				err := h.storeWithdrawnEvent(event.Raw.TxHash.Hex(), event.Raw.BlockNumber, event.TxHash, event.Token.Hex(), "1", event.TokenId.String(), event.To.Hex(), event.IsMintable)
 				if err != nil {
 					h.logger.Error(errors.Wrap(err, "failed to store ERC721 Withdrawn event to the database"))
 				}
 			}
 		case event := <-erc1155Chan:
 			if event != nil {
-				err := h.storeWithdrawnEvent(event.Raw.BlockNumber, event.TxHash, event.Token.Hex(), event.Amount.String(), event.TokenId.String(), event.To.Hex(), event.IsMintable)
+				err := h.storeWithdrawnEvent(event.Raw.TxHash.Hex(), event.Raw.BlockNumber, event.TxHash, event.Token.Hex(), event.Amount.String(), event.TokenId.String(), event.To.Hex(), event.IsMintable)
 				if err != nil {
 					h.logger.Error(errors.Wrap(err, "failed to store ERC1155 Withdrawn event to the database"))
 				}
@@ -486,35 +486,17 @@ func (h *eventHandlers) storeDepositedEvent(blockNumber uint64, txHash, tokenAdd
 }
 
 // storeWithdrawnEvent stores the withdrawn event in the database.
-func (h *eventHandlers) storeWithdrawnEvent(blockNumber uint64, txHash [32]byte, tokenAddress, amount, tokenId, toAddress string, isMintable bool) error {
+func (h *eventHandlers) storeWithdrawnEvent(withdrawTxHash string, blockNumber uint64, depositTxHash [32]byte, tokenAddress, amount, tokenId, toAddress string, isMintable bool) error {
 	// Convert the transaction hash to hexadecimal format.
-	transactionHash := common.HexToHash(common.Bytes2Hex(txHash[:])).Hex()
-
-	// Get the deposited event with the transaction hash.
-	depositedEvent, err := h.depositsHistoryRepository.
-		New(). // Create a new query builder instance to get the deposited event with the transaction hash.
-		Where("destination_network", h.chain.ID).
-		Where("tx_hash", transactionHash).
-		Get()
-	if err != nil {
-		if !errors.Is(err, sql.ErrNoRows) {
-			return err
-		}
-
-		// TODO: fix sql error no rows in case when the deposited event is not found, but missed deposited event is already processed and stored in the database.
-		h.logger.Warnf("failed to get deposited event with tx hash %s", transactionHash)
-
-		return nil
-	}
+	depositTransactionHash := common.HexToHash(common.Bytes2Hex(depositTxHash[:])).Hex()
 
 	return h.withdrawalsHistoryRepository.Insert(&repositories.WithdrawalsHistory{
-		SourceNetwork:      depositedEvent.SourceNetwork,
-		TxHash:             transactionHash,
+		WithdrawalTxHash:   withdrawTxHash,
+		DepositTxHash:      depositTransactionHash,
 		BlockNumber:        blockNumber,
 		TokenAddress:       tokenAddress,
 		TokenID:            tokenId,
 		Amount:             amount,
-		FromAddress:        depositedEvent.FromAddress,
 		ToAddress:          toAddress,
 		DestinationNetwork: h.chain.ID,
 		IsMintable:         isMintable,
