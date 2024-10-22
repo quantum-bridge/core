@@ -5,6 +5,7 @@ import (
 	"github.com/quantum-bridge/core/cmd/env"
 	"github.com/quantum-bridge/core/cmd/ipfs"
 	"github.com/quantum-bridge/core/cmd/proxy/evm/signature"
+	"github.com/quantum-bridge/core/pkg/squirrelizer"
 	"net"
 	"sync"
 )
@@ -23,6 +24,8 @@ type Config interface {
 	Signer() signature.Signer
 	// IPFS returns the IPFS client that are being used in the bridge.
 	IPFS() ipfs.IPFS
+	// DB returns the database that are being used in the bridge.
+	DB() *squirrelizer.DB
 }
 
 // config is struct that holds the configuration of the bridge.
@@ -32,6 +35,7 @@ type config struct {
 	onceListener    sync.Once
 	onceIPFS        sync.Once
 	onceSigner      sync.Once
+	onceDB          sync.Once
 
 	chains      []datashared.Chain
 	tokens      []datashared.Token

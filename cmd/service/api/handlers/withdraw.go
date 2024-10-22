@@ -4,8 +4,8 @@ import (
 	"github.com/pkg/errors"
 	"github.com/quantum-bridge/core/cmd/data"
 	"github.com/quantum-bridge/core/cmd/data/shared"
-	"github.com/quantum-bridge/core/cmd/service/requests"
-	"github.com/quantum-bridge/core/cmd/service/responses"
+	"github.com/quantum-bridge/core/cmd/service/api/requests"
+	"github.com/quantum-bridge/core/cmd/service/api/responses"
 	"net/http"
 )
 

@@ -2,6 +2,19 @@
 listener:
   port: :8000
 
+# Database section is used for configuring the database.
+db:
+  # Database connection string.
+  url: postgres://bridge:bridge@localhost/bridge?sslmode=disable
+  # Maximum open connections in the database pool.
+  max_open_connections: 12
+  # Maximum idle connections in the database pool.
+  max_idle_connections: 12
+  # Maximum time to wait for a connection to become available.
+  min_listener_retry_duration: 1s
+  # Maximum time to wait for a connection to become available.
+  max_listener_retry_duration: 1m
+
 # Bridge section is used for configuring supported tokens and chains for the bridge.
 bridge:
   # List of supported tokens.
@@ -26,7 +39,7 @@ bridge:
           token_address: ""
           # Bridging type: `liquidity_pool` (token locked/unlocked on bridge contract), `mintable` (token burned/minted).
           bridge_type:
-          # Specify auto send true if you want to use bridge to send tokens instead of user.
+          # Specify auto send true if you want to use bridge to send tokens instead of user (If true, user will not need to sign transaction to withdraw tokens from bridge).
           auto_send:
 
   # List of supported chains.
@@ -51,8 +64,12 @@ bridge:
         chain_id: 1
         # Native currency symbol.
         native_symbol: ""
+        # HTTP RPC URL for chain (this is used for adding custom RPC to Metamask).
+        rpc_url: ""
         # Explorer API URL.
         api_url: ""
+        # API key for API URL for getting chain data from explorer.
+        api_key: ""
         # Blockchain explorer URL.
         explorer_url: ""
 

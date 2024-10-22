@@ -3,7 +3,7 @@ package responses
 import (
 	"fmt"
 	datashared "github.com/quantum-bridge/core/cmd/data/shared"
-	"github.com/quantum-bridge/core/cmd/service/shared"
+	"github.com/quantum-bridge/core/cmd/service/api/shared"
 	"math/big"
 )
 

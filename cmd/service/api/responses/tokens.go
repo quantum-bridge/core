@@ -3,7 +3,7 @@ package responses
 import (
 	"encoding/json"
 	datashared "github.com/quantum-bridge/core/cmd/data/shared"
-	"github.com/quantum-bridge/core/cmd/service/shared"
+	"github.com/quantum-bridge/core/cmd/service/api/shared"
 )
 
 // NewTokenListResponse creates a new shared.TokenListResponse from the given tokens and chains.
