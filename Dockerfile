@@ -22,8 +22,4 @@ FROM alpine:latest
 RUN apk --no-cache add ca-certificates
 COPY --from=builder /app/main /app/main
 
-# Execute DB migrations with calling service with migration flag
-RUN /app/main run migration
-
-# Run database migrations before starting the service
-ENTRYPOINT ["/app/main", "run", "service", "tx-history"]
+ENTRYPOINT ["/app/main"]
