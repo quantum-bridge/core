@@ -59,6 +59,110 @@ const docTemplate = `{
                 }
             }
         },
+        "/history": {
+            "get": {
+                "description": "Get combined history of deposits and withdrawals with filtering and pagination",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "History"
+                ],
+                "summary": "Get transaction history",
+                "operationId": "getHistory",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Filter by from address",
+                        "name": "from_address",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by to address",
+                        "name": "to_address",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by source network",
+                        "name": "source_network",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by destination network",
+                        "name": "destination_network",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by token address",
+                        "name": "token_address",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by transaction type (deposits/withdrawals)",
+                        "name": "transaction_type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filter by minimum block number",
+                        "name": "from_block",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filter by maximum block number",
+                        "name": "to_block",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page number (default: 1)",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page size (default: 10)",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort field (default: block_number)",
+                        "name": "sort_by",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort order (asc/desc, default: desc)",
+                        "name": "sort_order",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/responses.HistoryResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
         "/tokens": {
             "get": {
                 "description": "Get the list of tokens based on the filter type and include chains flag.",
@@ -372,7 +476,7 @@ const docTemplate = `{
                 "NONFUNGIBLE"
             ]
         },
-        "github_com_quantum-bridge_core_cmd_service_shared.Chain": {
+        "github_com_quantum-bridge_core_cmd_service_api_shared.Chain": {
             "type": "object",
             "required": [
                 "attributes",
@@ -411,7 +515,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_quantum-bridge_core_cmd_service_shared.NFTAttribute": {
+        "github_com_quantum-bridge_core_cmd_service_api_shared.NFTAttribute": {
             "type": "object",
             "required": [
                 "trait_type",
@@ -428,7 +532,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_quantum-bridge_core_cmd_service_shared.Token": {
+        "github_com_quantum-bridge_core_cmd_service_api_shared.Token": {
             "type": "object",
             "required": [
                 "attributes",
@@ -607,6 +711,79 @@ const docTemplate = `{
                 }
             }
         },
+        "responses.HistoryEntry": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "string"
+                },
+                "block_number": {
+                    "type": "integer"
+                },
+                "deposit_tx_hash": {
+                    "type": "string"
+                },
+                "destination_network": {
+                    "type": "string"
+                },
+                "from_address": {
+                    "type": "string"
+                },
+                "is_mintable": {
+                    "type": "boolean"
+                },
+                "source_network": {
+                    "type": "string"
+                },
+                "to_address": {
+                    "type": "string"
+                },
+                "token_address": {
+                    "type": "string"
+                },
+                "token_id": {
+                    "type": "string"
+                },
+                "tx_hash": {
+                    "type": "string"
+                },
+                "type": {
+                    "description": "\"deposit\" or \"withdrawal\"",
+                    "type": "string"
+                },
+                "withdrawal_tx_hash": {
+                    "type": "string"
+                }
+            }
+        },
+        "responses.HistoryResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/responses.HistoryEntry"
+                    }
+                },
+                "pagination": {
+                    "type": "object",
+                    "properties": {
+                        "current_page": {
+                            "type": "integer"
+                        },
+                        "page_size": {
+                            "type": "integer"
+                        },
+                        "total_items": {
+                            "type": "integer"
+                        },
+                        "total_pages": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        },
         "shared.Balance": {
             "type": "object",
             "required": [
@@ -725,7 +902,7 @@ const docTemplate = `{
                     "description": "Data is the list of chains.",
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_quantum-bridge_core_cmd_service_shared.Chain"
+                        "$ref": "#/definitions/github_com_quantum-bridge_core_cmd_service_api_shared.Chain"
                     }
                 },
                 "included": {
@@ -813,7 +990,7 @@ const docTemplate = `{
                     "description": "Attributes is the list of attributes of the NFT.",
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_quantum-bridge_core_cmd_service_shared.NFTAttribute"
+                        "$ref": "#/definitions/github_com_quantum-bridge_core_cmd_service_api_shared.NFTAttribute"
                     }
                 },
                 "description": {
@@ -944,7 +1121,7 @@ const docTemplate = `{
                     "description": "Data is the list of tokens.",
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_quantum-bridge_core_cmd_service_shared.Token"
+                        "$ref": "#/definitions/github_com_quantum-bridge_core_cmd_service_api_shared.Token"
                     }
                 },
                 "included": {
