@@ -21,7 +21,7 @@ type DepositsHistoryRepository interface {
 	// Insert inserts the given deposits history into the database.
 	Insert(depositsHistory *DepositsHistory) error
 	// Where sets the where clause for the deposits history query.
-	Where(column, value string) DepositsHistoryRepository
+	Where(column string, value interface{}) DepositsHistoryRepository
 	// OrderBy sets the order by for the deposits history query.
 	OrderBy(column, direction string) DepositsHistoryRepository
 	// Limit sets the limit for the deposits history query.
@@ -80,9 +80,19 @@ func (q *depositsHistory) Insert(depositsHistory *DepositsHistory) error {
 }
 
 // Where sets the where clause for the deposits history query.
-func (q *depositsHistory) Where(column, value string) DepositsHistoryRepository {
-	q.sql = q.sql.Where(sq.Eq{column: value})
+func (q *depositsHistory) Where(column string, value interface{}) DepositsHistoryRepository {
+	// Handle special cases for block number comparison
+	if column == "block_number >=" {
+		q.sql = q.sql.Where(fmt.Sprintf("block_number >= %s", value))
+		return q
+	}
+	if column == "block_number <=" {
+		q.sql = q.sql.Where(fmt.Sprintf("block_number <= %s", value))
+		return q
+	}
 
+	// Default case using Eq for exact matches
+	q.sql = q.sql.Where(sq.Eq{column: value})
 	return q
 }
 

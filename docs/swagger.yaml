@@ -10,7 +10,7 @@ definitions:
     x-enum-varnames:
     - FUNGIBLE
     - NONFUNGIBLE
-  github_com_quantum-bridge_core_cmd_service_shared.Chain:
+  github_com_quantum-bridge_core_cmd_service_api_shared.Chain:
     properties:
       attributes:
         allOf:
@@ -33,7 +33,7 @@ definitions:
     - relationships
     - type
     type: object
-  github_com_quantum-bridge_core_cmd_service_shared.NFTAttribute:
+  github_com_quantum-bridge_core_cmd_service_api_shared.NFTAttribute:
     properties:
       trait_type:
         description: TraitType is the type of the trait.
@@ -45,7 +45,7 @@ definitions:
     - trait_type
     - value
     type: object
-  github_com_quantum-bridge_core_cmd_service_shared.Token:
+  github_com_quantum-bridge_core_cmd_service_api_shared.Token:
     properties:
       attributes:
         allOf:
@@ -163,6 +163,54 @@ definitions:
     - token_id
     - tx_hash
     type: object
+  responses.HistoryEntry:
+    properties:
+      amount:
+        type: string
+      block_number:
+        type: integer
+      deposit_tx_hash:
+        type: string
+      destination_network:
+        type: string
+      from_address:
+        type: string
+      is_mintable:
+        type: boolean
+      source_network:
+        type: string
+      to_address:
+        type: string
+      token_address:
+        type: string
+      token_id:
+        type: string
+      tx_hash:
+        type: string
+      type:
+        description: '"deposit" or "withdrawal"'
+        type: string
+      withdrawal_tx_hash:
+        type: string
+    type: object
+  responses.HistoryResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/responses.HistoryEntry'
+        type: array
+      pagination:
+        properties:
+          current_page:
+            type: integer
+          page_size:
+            type: integer
+          total_items:
+            type: integer
+          total_pages:
+            type: integer
+        type: object
+    type: object
   shared.Balance:
     properties:
       attributes:
@@ -238,7 +286,7 @@ definitions:
       data:
         description: Data is the list of chains.
         items:
-          $ref: '#/definitions/github_com_quantum-bridge_core_cmd_service_shared.Chain'
+          $ref: '#/definitions/github_com_quantum-bridge_core_cmd_service_api_shared.Chain'
         type: array
       included:
         description: Included is the included object in the response.
@@ -296,7 +344,7 @@ definitions:
       attributes:
         description: Attributes is the list of attributes of the NFT.
         items:
-          $ref: '#/definitions/github_com_quantum-bridge_core_cmd_service_shared.NFTAttribute'
+          $ref: '#/definitions/github_com_quantum-bridge_core_cmd_service_api_shared.NFTAttribute'
         type: array
       description:
         description: Description is the description of the NFT.
@@ -384,7 +432,7 @@ definitions:
       data:
         description: Data is the list of tokens.
         items:
-          $ref: '#/definitions/github_com_quantum-bridge_core_cmd_service_shared.Token'
+          $ref: '#/definitions/github_com_quantum-bridge_core_cmd_service_api_shared.Token'
         type: array
       included:
         description: Included is the included object in the response.
@@ -456,6 +504,76 @@ paths:
       summary: Get chains list
       tags:
       - Chains
+  /history:
+    get:
+      consumes:
+      - application/json
+      description: Get combined history of deposits and withdrawals with filtering
+        and pagination
+      operationId: getHistory
+      parameters:
+      - description: Filter by from address
+        in: query
+        name: from_address
+        type: string
+      - description: Filter by to address
+        in: query
+        name: to_address
+        type: string
+      - description: Filter by source network
+        in: query
+        name: source_network
+        type: string
+      - description: Filter by destination network
+        in: query
+        name: destination_network
+        type: string
+      - description: Filter by token address
+        in: query
+        name: token_address
+        type: string
+      - description: Filter by transaction type (deposits/withdrawals)
+        in: query
+        name: transaction_type
+        type: string
+      - description: Filter by minimum block number
+        in: query
+        name: from_block
+        type: integer
+      - description: Filter by maximum block number
+        in: query
+        name: to_block
+        type: integer
+      - description: 'Page number (default: 1)'
+        in: query
+        name: page
+        type: integer
+      - description: 'Page size (default: 10)'
+        in: query
+        name: page_size
+        type: integer
+      - description: 'Sort field (default: block_number)'
+        in: query
+        name: sort_by
+        type: string
+      - description: 'Sort order (asc/desc, default: desc)'
+        in: query
+        name: sort_order
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/responses.HistoryResponse'
+        "400":
+          description: Bad request
+        "500":
+          description: Internal server error
+      summary: Get transaction history
+      tags:
+      - History
   /tokens:
     get:
       consumes:

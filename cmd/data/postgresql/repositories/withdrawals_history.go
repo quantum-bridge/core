@@ -21,7 +21,7 @@ type WithdrawalsHistoryRepository interface {
 	// Insert inserts the given withdrawals history into the database.
 	Insert(withdrawalsHistory *WithdrawalsHistory) error
 	// Where sets the where clause for the withdrawals history query.
-	Where(column, value string) WithdrawalsHistoryRepository
+	Where(column string, value interface{}) WithdrawalsHistoryRepository
 	// OrderBy sets the order by for the withdrawals history query.
 	OrderBy(column, direction string) WithdrawalsHistoryRepository
 	// Limit sets the limit for the withdrawals history query.
@@ -80,9 +80,19 @@ func (q *withdrawalsHistory) Insert(withdrawalsHistory *WithdrawalsHistory) erro
 }
 
 // Where sets the where clause for the withdrawals history query.
-func (q *withdrawalsHistory) Where(column, value string) WithdrawalsHistoryRepository {
-	q.sql = q.sql.Where(sq.Eq{column: value})
+func (q *withdrawalsHistory) Where(column string, value interface{}) WithdrawalsHistoryRepository {
+	// Handle special cases for block number comparison
+	if column == "block_number >=" {
+		q.sql = q.sql.Where(fmt.Sprintf("block_number >= %s", value))
+		return q
+	}
+	if column == "block_number <=" {
+		q.sql = q.sql.Where(fmt.Sprintf("block_number <= %s", value))
+		return q
+	}
 
+	// Default case using Eq for exact matches
+	q.sql = q.sql.Where(sq.Eq{column: value})
 	return q
 }
 
