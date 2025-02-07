@@ -34,6 +34,7 @@ func (s *service) router() chi.Router {
 			handlers.TokenChainsContextMiddleware(repositories.NewTokenChains(s.tokenChains)),
 			handlers.ProxyContextMiddleware(proxies),
 			handlers.DepositsHistoryContextMiddleware(pgrepositories.NewDepositsHistory(s.db)),
+			handlers.WithdrawalsHistoryContextMiddleware(pgrepositories.NewWithdrawalsHistory(s.db)),
 		),
 		cors.Handler(cors.Options{
 			AllowedOrigins:   []string{"*"},
@@ -59,6 +60,7 @@ func (s *service) router() chi.Router {
 			r.Post("/lock", handlers.Lock)
 			r.Post("/withdraw", handlers.Withdraw)
 		})
+		r.Get("/history", handlers.GetHistory)
 	})
 
 	return router

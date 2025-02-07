@@ -25,6 +25,8 @@ const (
 	proxyCtx
 	// depositsHistoryCtx is the context key for the database.
 	depositsHistoryCtx
+	// withdrawalsHistoryCtx is the context key for the database.
+	withdrawalsHistoryCtx
 )
 
 // LogContextMiddleware is a middleware that adds the logger to the context.
@@ -69,6 +71,13 @@ func DepositsHistoryContextMiddleware(transactionsHistoryQuery pgrepositories.De
 	}
 }
 
+// WithdrawalsHistoryContextMiddleware is a middleware that adds the database to the context.
+func WithdrawalsHistoryContextMiddleware(transactionsHistoryQuery pgrepositories.WithdrawalsHistoryRepository) func(ctx context.Context) context.Context {
+	return func(ctx context.Context) context.Context {
+		return context.WithValue(ctx, withdrawalsHistoryCtx, transactionsHistoryQuery)
+	}
+}
+
 // Log returns the logger from the RAM cache.
 func Log(ctx context.Context) *zap.SugaredLogger {
 	return ctx.Value(loggerCtx).(*zap.SugaredLogger)
@@ -97,4 +106,9 @@ func Proxy(ctx context.Context) proxy.Proxy {
 // DepositsHistoryQuery returns the database client that are being used in the bridge.
 func DepositsHistoryQuery(ctx context.Context) pgrepositories.DepositsHistoryRepository {
 	return ctx.Value(depositsHistoryCtx).(pgrepositories.DepositsHistoryRepository).New()
+}
+
+// WithdrawalsHistoryQuery returns the database client that are being used in the bridge.
+func WithdrawalsHistoryQuery(ctx context.Context) pgrepositories.WithdrawalsHistoryRepository {
+	return ctx.Value(withdrawalsHistoryCtx).(pgrepositories.WithdrawalsHistoryRepository).New()
 }
