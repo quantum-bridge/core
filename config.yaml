@@ -64,6 +64,8 @@ bridge:
         chain_id: 1
         # Native currency symbol.
         native_symbol: ""
+        # Native currency decimals.
+        native_decimals: 18
         # HTTP RPC URL for chain (this is used for adding custom RPC to Metamask).
         rpc_url: ""
         # Explorer API URL.
